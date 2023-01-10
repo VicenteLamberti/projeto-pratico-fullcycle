@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.fullcycle.vicente.infrastructure.MainTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-01-09T19:32:58" hostname="NLAMBERT" time="0.021">
+  <properties/>
+  <testcase name="mainTest()" classname="com.fullcycle.vicente.infrastructure.MainTest" time="0.021"/>
+  <system-out><![CDATA[Hello world!
+com.fullcycle.vicente.domain.Category@624ea235
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
