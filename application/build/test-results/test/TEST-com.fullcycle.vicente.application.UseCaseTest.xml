@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.fullcycle.vicente.application.UseCaseTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-01-09T19:25:28" hostname="NLAMBERT" time="0.016">
+<testsuite name="com.fullcycle.vicente.application.UseCaseTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-01-10T13:59:59" hostname="NLAMBERT" time="0.02">
   <properties/>
-  <testcase name="testCreateUseCase()" classname="com.fullcycle.vicente.application.UseCaseTest" time="0.016"/>
+  <testcase name="testCreateUseCase()" classname="com.fullcycle.vicente.application.UseCaseTest" time="0.02"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
