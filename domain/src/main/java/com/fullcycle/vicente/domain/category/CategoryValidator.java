@@ -6,6 +6,7 @@ import com.fullcycle.vicente.domain.validation.Validator;
 
 public class CategoryValidator extends Validator {
 
+    public static final int MAX_NAME_LENGTH = 255;
     private final Category category;
     public CategoryValidator(final Category aCategory, final ValidationHandler aHandler) {
         super(aHandler);
@@ -35,7 +36,7 @@ public class CategoryValidator extends Validator {
         }
 
         final int length = name.trim().length();
-        if(length > 255 || length < 3){
+        if(length > MAX_NAME_LENGTH || length < 3){
             this.validationHandler().append(new Error("'name' should  be  than 3 character and 255 character"));
             return;
         }
