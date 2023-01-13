@@ -17,10 +17,6 @@ public class CategoryValidator extends Validator {
     public void validate() {
         checkNameConstraints();
 
-        if(this.category.getName().length() < 3){
-            this.validationHandler().append(new Error("'name' should not be less than 3 character"));
-        }
-
     }
 
     private void checkNameConstraints() {

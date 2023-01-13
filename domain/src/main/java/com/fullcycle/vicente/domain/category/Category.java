@@ -6,7 +6,7 @@ import com.fullcycle.vicente.domain.validation.ValidationHandler;
 import java.time.Instant;
 import java.util.UUID;
 
-public class Category extends AggregateRoot<CategoryID> {
+public class Category extends AggregateRoot<CategoryID> implements Cloneable{
     private String name;
     private String description;
     private boolean active;
@@ -30,6 +30,10 @@ public class Category extends AggregateRoot<CategoryID> {
         final Instant now = Instant.now();
         final Instant deletedAt = isActive ? null : now;
         return new Category(id,aName, aDescription,isActive, now,now, deletedAt);
+    }
+
+    public static Category clone (final Category aCategory){
+        return aCategory.clone();
     }
 
     @Override
@@ -94,5 +98,14 @@ public class Category extends AggregateRoot<CategoryID> {
         }
         this.updatedAt = Instant.now();
         return this;
+    }
+
+    @Override
+    public Category clone() {
+        try{
+            return (Category) super.clone();
+        }catch (CloneNotSupportedException ex){
+            throw  new AssertionError();
+        }
     }
 }
