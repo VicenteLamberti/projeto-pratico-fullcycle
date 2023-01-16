@@ -9,6 +9,7 @@ import com.fullcycle.vicente.domain.exceptions.DomainException;
 import com.fullcycle.vicente.domain.validation.handler.Notification;
 import io.vavr.control.Either;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -34,6 +35,10 @@ public class CreateCategoryUseCaseTest {
     //Teste Criando uma categoria inativa
     //Teste simulando um erro genérico vindo do gateway
 
+    @BeforeEach
+    void cleanUp(){
+        Mockito.reset(categoryGateway);
+    }
 
     @Test
     public void givenAValidCommand_whenCallsCreateCategory_shouldReturnCategoryId(){

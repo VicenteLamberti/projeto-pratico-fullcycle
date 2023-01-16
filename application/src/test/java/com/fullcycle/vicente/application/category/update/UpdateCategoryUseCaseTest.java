@@ -9,6 +9,7 @@ import com.fullcycle.vicente.domain.category.CategoryID;
 import com.fullcycle.vicente.domain.exceptions.DomainException;
 import com.fullcycle.vicente.domain.validation.handler.Notification;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -34,6 +35,11 @@ public class UpdateCategoryUseCaseTest {
 
     @Mock
     private CategoryGateway categoryGateway;
+
+    @BeforeEach
+    void cleanUp(){
+        Mockito.reset(categoryGateway);
+    }
 
     @Test
     public void givenAValidCommand_whenCallsUpdateCategory_shouldReturnCategoryId(){
@@ -194,44 +200,33 @@ public class UpdateCategoryUseCaseTest {
     public void givenAInvalidId_whenGatewayThrowsRandomException_shouldReturnAException(){
         final String expectedName = "Filmes";
         final String expectedDescription = "A categoria mais assistida";
-        final boolean expectedIsActive = true;
-        final String expectedErrorMessage = "Gateway Error";
+        final boolean expectedIsActive = false;
+        final String expectedId = "123";
+        final String expectedErrorMessage = "Category with ID 123 was not found";
         final int expectedErrorCount = 1;
 
-        final Category aCategory = Category.newCategory("Film", null, true);
 
 
-        CategoryID expectedId = aCategory.getId();
-        String expectedValueId = expectedId.getValue();
         final UpdateCategoryCommand aCommand = UpdateCategoryCommand.with(
-                expectedId.getValue(),
+                expectedId,
                 expectedName,
                 expectedDescription,
                 expectedIsActive);
 
 
-        Mockito.when(categoryGateway.findById(Mockito.eq(expectedId))).thenThrow(new DomainException("Category with ID %s was not found".formatted(expectedValueId));
-        Mockito.when(categoryGateway.update(Mockito.any()))
-                .thenThrow(new IllegalStateException(expectedErrorMessage));
+        Mockito.when(categoryGateway.findById(Mockito.eq(CategoryID.from(expectedId))))
+                .thenReturn(Optional.empty());
 
 
 
-        final Notification notification = useCase.execute(aCommand).getLeft();
+        DomainException actualException = Assertions.assertThrows(DomainException.class, ()-> useCase.execute(aCommand));
 
-        Assertions.assertEquals(expectedErrorMessage, notification.first().message());
-        Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
+        Assertions.assertEquals(expectedErrorMessage, actualException.getErrors().get(0).message());
+        Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
 
-        Mockito.verify(categoryGateway, Mockito.times(1))
-                .update(Mockito.argThat(aUpdatedCategory->
-                        Objects.equals(expectedName, aUpdatedCategory.getName())
-                                && Objects.equals(expectedDescription, aUpdatedCategory.getDescription())
-                                && Objects.equals(expectedIsActive, aUpdatedCategory.isActive())
-                                && Objects.equals(expectedId, aUpdatedCategory.getId())
-                                && Objects.equals(aCategory.getCreatedAt(), aUpdatedCategory.getCreatedAt())
-                                && aCategory.getUpdatedAt().isBefore(aUpdatedCategory.getUpdatedAt())
-                                && Objects.isNull(aUpdatedCategory.getDeletedAt())
+        Mockito.verify(categoryGateway, Mockito.times(1)).findById(Mockito.eq(CategoryID.from(expectedId)));
+        Mockito.verify(categoryGateway,Mockito.times(0)).update(Mockito.any());
 
-                ));
     }
 
 
