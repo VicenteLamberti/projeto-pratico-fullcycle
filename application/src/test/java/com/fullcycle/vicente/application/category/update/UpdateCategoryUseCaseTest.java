@@ -6,6 +6,8 @@ import com.fullcycle.vicente.application.category.create.DefaultCreateCategoryUs
 import com.fullcycle.vicente.domain.category.Category;
 import com.fullcycle.vicente.domain.category.CategoryGateway;
 import com.fullcycle.vicente.domain.category.CategoryID;
+import com.fullcycle.vicente.domain.exceptions.DomainException;
+import com.fullcycle.vicente.domain.validation.handler.Notification;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -71,8 +73,165 @@ public class UpdateCategoryUseCaseTest {
                                 && Objects.isNull(aUpdatedCategory.getDeletedAt())
 
                 ));
+    }
+
+    @Test
+    public void givenAInvalidName_whenCallUpdateCategory_thenShouldReturnDomainException(){
+        final String expectedName = null;
+        final String expectedDescription = "A categoria mais assistida";
+        final boolean expectedIsActive = true;
+        final String expectedErrorMessage = "'name' should not be null";
+        final int expectedErrorCount = 1;
+
+        final Category aCategory = Category.newCategory("Film", null, true);
+
+        CategoryID expectedId = aCategory.getId();
+        final UpdateCategoryCommand aCommand = UpdateCategoryCommand.with(
+                expectedId.getValue(),
+                expectedName,
+                expectedDescription,
+                expectedIsActive);
+
+        Mockito.when(categoryGateway.findById(Mockito.eq(expectedId))).thenReturn(Optional.of((Category.clone(aCategory))));
+
+        final Notification notification = useCase.execute(aCommand).getLeft();
+
+        Assertions.assertEquals(expectedErrorMessage, notification.first().message());
+        Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
+        Mockito.verify(categoryGateway, Mockito.times(0)).update(Mockito.any());
+
+    }
 
 
+    @Test
+    public void givenAValidInactiveCommand_whenCallsUpdateCategory_shouldReturnCategoryId(){
+        final String expectedName = "Filmes";
+        final String expectedDescription = "A categoria mais assistida";
+        final boolean expectedIsActive =  false;
+
+
+        final Category aCategory = Category.newCategory("Film", null, true);
+
+        Assertions.assertTrue(aCategory.isActive());
+        Assertions.assertNull(aCategory.getDeletedAt());
+        CategoryID expectedId = aCategory.getId();
+        final UpdateCategoryCommand aCommand = UpdateCategoryCommand.with(
+                expectedId.getValue(),
+                expectedName,
+                expectedDescription,
+                expectedIsActive);
+
+        Mockito.when(categoryGateway.findById(Mockito.eq(expectedId))).thenReturn(Optional.of((Category.clone(aCategory))));
+
+        Mockito.when(categoryGateway.update(Mockito.any()))
+                .thenAnswer(AdditionalAnswers.returnsFirstArg());
+
+        final UpdateCategoryOutput actualOutput = useCase.execute(aCommand).get();
+
+        Assertions.assertNotNull(actualOutput);
+        Assertions.assertNotNull(actualOutput.id());
+
+        Mockito.verify(categoryGateway, Mockito.times(1)).findById(expectedId);
+
+        Mockito.verify(categoryGateway, Mockito.times(1))
+                .update(Mockito.argThat(aUpdatedCategory ->
+                        Objects.equals(expectedName, aUpdatedCategory.getName())
+                                && Objects.equals(expectedDescription, aUpdatedCategory.getDescription())
+                                && Objects.equals(expectedIsActive, aUpdatedCategory.isActive())
+                                && Objects.equals(expectedId, aUpdatedCategory.getId())
+                                && Objects.equals(aCategory.getCreatedAt(), aUpdatedCategory.getCreatedAt())
+                                && aCategory.getUpdatedAt().isBefore(aUpdatedCategory.getUpdatedAt())
+                                && Objects.nonNull(aUpdatedCategory.getDeletedAt())
+
+                ));
+    }
+
+    @Test
+    public void givenAValidCommand_whenGatewayThrowsRandomException_shouldReturnAException(){
+        final String expectedName = "Filmes";
+        final String expectedDescription = "A categoria mais assistida";
+        final boolean expectedIsActive = true;
+        final String expectedErrorMessage = "Gateway Error";
+        final int expectedErrorCount = 1;
+
+        final Category aCategory = Category.newCategory("Film", null, true);
+
+
+        CategoryID expectedId = aCategory.getId();
+        final UpdateCategoryCommand aCommand = UpdateCategoryCommand.with(
+                expectedId.getValue(),
+                expectedName,
+                expectedDescription,
+                expectedIsActive);
+
+
+        Mockito.when(categoryGateway.findById(Mockito.eq(expectedId))).thenReturn(Optional.of((Category.clone(aCategory))));
+        Mockito.when(categoryGateway.update(Mockito.any()))
+                .thenThrow(new IllegalStateException(expectedErrorMessage));
+
+
+
+        final Notification notification = useCase.execute(aCommand).getLeft();
+
+        Assertions.assertEquals(expectedErrorMessage, notification.first().message());
+        Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
+
+        Mockito.verify(categoryGateway, Mockito.times(1))
+                .update(Mockito.argThat(aUpdatedCategory->
+                        Objects.equals(expectedName, aUpdatedCategory.getName())
+                                && Objects.equals(expectedDescription, aUpdatedCategory.getDescription())
+                                && Objects.equals(expectedIsActive, aUpdatedCategory.isActive())
+                                && Objects.equals(expectedId, aUpdatedCategory.getId())
+                                && Objects.equals(aCategory.getCreatedAt(), aUpdatedCategory.getCreatedAt())
+                                && aCategory.getUpdatedAt().isBefore(aUpdatedCategory.getUpdatedAt())
+                                && Objects.isNull(aUpdatedCategory.getDeletedAt())
+
+                ));
+    }
+
+
+    @Test
+    public void givenAInvalidId_whenGatewayThrowsRandomException_shouldReturnAException(){
+        final String expectedName = "Filmes";
+        final String expectedDescription = "A categoria mais assistida";
+        final boolean expectedIsActive = true;
+        final String expectedErrorMessage = "Gateway Error";
+        final int expectedErrorCount = 1;
+
+        final Category aCategory = Category.newCategory("Film", null, true);
+
+
+        CategoryID expectedId = aCategory.getId();
+        String expectedValueId = expectedId.getValue();
+        final UpdateCategoryCommand aCommand = UpdateCategoryCommand.with(
+                expectedId.getValue(),
+                expectedName,
+                expectedDescription,
+                expectedIsActive);
+
+
+        Mockito.when(categoryGateway.findById(Mockito.eq(expectedId))).thenThrow(new DomainException("Category with ID %s was not found".formatted(expectedValueId));
+        Mockito.when(categoryGateway.update(Mockito.any()))
+                .thenThrow(new IllegalStateException(expectedErrorMessage));
+
+
+
+        final Notification notification = useCase.execute(aCommand).getLeft();
+
+        Assertions.assertEquals(expectedErrorMessage, notification.first().message());
+        Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
+
+        Mockito.verify(categoryGateway, Mockito.times(1))
+                .update(Mockito.argThat(aUpdatedCategory->
+                        Objects.equals(expectedName, aUpdatedCategory.getName())
+                                && Objects.equals(expectedDescription, aUpdatedCategory.getDescription())
+                                && Objects.equals(expectedIsActive, aUpdatedCategory.isActive())
+                                && Objects.equals(expectedId, aUpdatedCategory.getId())
+                                && Objects.equals(aCategory.getCreatedAt(), aUpdatedCategory.getCreatedAt())
+                                && aCategory.getUpdatedAt().isBefore(aUpdatedCategory.getUpdatedAt())
+                                && Objects.isNull(aUpdatedCategory.getDeletedAt())
+
+                ));
     }
 
 
