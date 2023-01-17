@@ -37,6 +37,7 @@ public class DeleteCategoryUseCaseTest {
         Mockito.verify(categoryGateway,Mockito.times(1)).deleteById(aExpectedId);
     }
 
+    @Test
     public void givenAInvalidId_whenCallsDeleteCategory_shouldBeOk(){
         final CategoryID expectedId = CategoryID.from("123");
 
@@ -48,6 +49,7 @@ public class DeleteCategoryUseCaseTest {
 
     }
 
+    @Test
     public void givenAValid_whenGatewayThrowsException_shouldReturnException(){
         final Category aCategory = Category.newCategory("Filmes","A categoria mais assistida", true);
         final CategoryID expectedId = aCategory.getId();
