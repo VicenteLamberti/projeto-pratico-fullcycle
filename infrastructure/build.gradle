@@ -8,7 +8,7 @@ plugins {
 group 'com.fullcycle.vicente.infrastructure'
 version '1.0-SNAPSHOT'
 
-//Para buildar no projeto raiz e nao na pasta build de infraestructure
+//Para buildar no projeto raiz e nao na pasta build de infraestructure por causa desse esta depreciado
 bootJar {
     archiveName 'application.jar'
     destinationDirectory.set(file("${rootProject.buildDir}/libs"))
@@ -21,11 +21,13 @@ repositories {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":application"))
+    implementation('mysql:mysql-connector-java')
 
     implementation('org.springframework.boot:spring-boot-starter-web'){
         exclude(module:'spring-boot-starter-tomcat')
     }
     implementation(('org.springframework.boot:spring-boot-starter-undertow'))
+    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 
 
