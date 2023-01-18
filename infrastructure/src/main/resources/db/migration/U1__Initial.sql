@@ -1,0 +1,2 @@
+DROP TABLE category;
+--NAO DA PRA USAR ESSE NA COMMUNIT, flywayUndo
