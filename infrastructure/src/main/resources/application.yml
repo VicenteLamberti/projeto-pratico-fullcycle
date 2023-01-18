@@ -14,4 +14,21 @@ spring:
     url: jdbc:mysql://${mysql.url}/${mysql.schema}?useSSL=true&serverTimezone=UTC&characterEncoding=UTF-8
     username: ${mysql.username}
     password: ${mysql.password}
+    hikari:
+      auto-commit: false
+      connection-timeout: 250 #Ideal é manter baixo, porque se não for liberado uma thread para uma conexão é melhor falhar rápido
+      max-lifetime: 600000 #Máximo que uma conexão fica aberta
+      maximum-pool-size: 20 #Manter até no máximo 20 conexões com o banco
+      minimum-idle: 10
+      pool-name: master
+  jpa:
+    open-in-view: false #Se for true ele abre uma conexão já na controller
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      #"[hibernate.dialect]": org.hibernate.dialect.MySQL5InnoDBDialect NAOFUNCIONA
+      "[hibernate.generate_statistics]": false
+      "[hibernate.connection.provider_disables_autocommit]": true
+      #Para aumentar a performance , porque assim ele já avisa que a transação já está com autocommit false, porque senão ele tem que abrir a conexão para saber
 
