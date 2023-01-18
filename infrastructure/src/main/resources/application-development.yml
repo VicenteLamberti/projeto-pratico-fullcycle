@@ -6,5 +6,5 @@ server:
     min-response-size: 1024
   undertow:
     threads:
-      worker: 64
+      worker: 10
       io: 4

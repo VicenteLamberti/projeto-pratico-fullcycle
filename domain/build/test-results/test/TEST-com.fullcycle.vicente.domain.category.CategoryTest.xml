@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.fullcycle.vicente.domain.category.CategoryTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-01-18T12:11:23" hostname="NLAMBERT" time="0.021">
-  <properties/>
-  <testcase name="givenAValidCategory_whenCallUpdateToInactivated_thenReturnCategoryUpdated()" classname="com.fullcycle.vicente.domain.category.CategoryTest" time="0.021"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
