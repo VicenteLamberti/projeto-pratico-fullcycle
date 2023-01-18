@@ -1,5 +1,6 @@
 package com.fullcycle.vicente.application.category.retrieve.list;
 
+import com.fullcycle.vicente.domain.category.Category;
 import com.fullcycle.vicente.domain.category.CategoryID;
 
 import java.time.Instant;
@@ -11,7 +12,17 @@ public record CategoryListOutput(
 
         boolean isActive,
         Instant createdAt,
-        Instant updatedAt,
         Instant deletedAt
 ) {
+
+    public static CategoryListOutput from(final Category aCategory){
+        return new CategoryListOutput(
+                aCategory.getId(),
+                aCategory.getName(),
+                aCategory.getDescription(),
+                aCategory.isActive(),
+                aCategory.getCreatedAt(),
+                aCategory.getDeletedAt()
+        );
+    }
 }
