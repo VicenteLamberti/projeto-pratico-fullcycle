@@ -5,6 +5,7 @@ import com.fullcycle.vicente.domain.category.CategoryGateway;
 import com.fullcycle.vicente.domain.category.CategoryID;
 import com.fullcycle.vicente.domain.category.CategorySearchQuery;
 import com.fullcycle.vicente.domain.pagination.Pagination;
+import com.fullcycle.vicente.infrastructure.category.persistence.CategoryJPAEntity;
 import com.fullcycle.vicente.infrastructure.category.persistence.CategoryRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -21,9 +22,8 @@ public class CategoryMySQLGateway implements CategoryGateway {
 
     @Override
     public Category create(Category aCategory) {
-        return null;
+        return this.repository.save(CategoryJPAEntity.from(aCategory)).toAggregate();
     }
-
     @Override
     public void deleteById(CategoryID anId) {
 
