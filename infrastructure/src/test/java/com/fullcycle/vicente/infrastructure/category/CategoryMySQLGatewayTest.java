@@ -67,8 +67,49 @@ public class CategoryMySQLGatewayTest {
         Assertions.assertEquals(aCategory.getDeletedAt(),actualEntity.getDeletedAt());
         Assertions.assertNull(actualEntity.getDeletedAt());
 
+    }
 
 
+
+    @Test
+    public void givenAValidCategory_whenCallsUpdate_shouldReturnCategoryUpdated(){
+        final String expectedName = "Filmes";
+        final String expectedDescription = "A categoria mais assistida";
+        final boolean expectedActive = true;
+
+        final int expectedQuantityRegisterInBankBeforePersist = 0;
+        final int expectedQuantityRegisterInBankAfterPersist = 1;
+
+        Assertions.assertEquals(expectedQuantityRegisterInBankBeforePersist, categoryRepository.count());
+
+        Category aCategory = Category.newCategory("Name Invalid", null, expectedActive);
+
+        categoryRepository.saveAndFlush(CategoryJPAEntity.from(aCategory));
+
+        Assertions.assertEquals(expectedQuantityRegisterInBankAfterPersist, categoryRepository.count());
+
+        final Category aUpdatedCategory = aCategory.clone().update(expectedName,expectedDescription,expectedActive);
+
+        Category actualCategory = categoryMySQLGateway.update(aUpdatedCategory);
+
+        Assertions.assertEquals(aCategory.getId(),actualCategory.getId());
+        Assertions.assertEquals(expectedName,actualCategory.getName());
+        Assertions.assertEquals(expectedDescription,actualCategory.getDescription());
+        Assertions.assertEquals(expectedActive,actualCategory.isActive());
+        Assertions.assertEquals(aCategory.getCreatedAt(),actualCategory.getCreatedAt());
+        Assertions.assertTrue(aCategory.getUpdatedAt().isBefore(aUpdatedCategory.getUpdatedAt()));
+        Assertions.assertEquals(aCategory.getDeletedAt(),actualCategory.getDeletedAt());
+
+        CategoryJPAEntity actualEntity = categoryRepository.findById(aCategory.getId().getValue()).get();
+
+        Assertions.assertEquals(aCategory.getId().getValue(),actualEntity.getId());
+        Assertions.assertEquals(expectedName,actualEntity.getName());
+        Assertions.assertEquals(expectedDescription,actualEntity.getDescription());
+        Assertions.assertEquals(expectedActive,actualEntity.isActive());
+        Assertions.assertEquals(aCategory.getCreatedAt(),actualEntity.getCreatedAt());
+        Assertions.assertTrue(aCategory.getUpdatedAt().isBefore(actualEntity.getUpdatedAt()));
+        Assertions.assertEquals(aCategory.getDeletedAt(),actualEntity.getDeletedAt());
+        Assertions.assertNull(actualEntity.getDeletedAt());
 
     }
 
