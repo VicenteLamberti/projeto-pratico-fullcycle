@@ -90,7 +90,7 @@ public class GetCategoryByIdUseCaseIT {
 
         Mockito.doThrow(new IllegalStateException("Gateway error"))
                 .when(categoryGateway).findById(Mockito.eq(expectedId));
-        
+
         final IllegalStateException actualException =
                 Assertions
                         .assertThrows(IllegalStateException.class,
