@@ -42,6 +42,8 @@ dependencies {
     testImplementation('org.flywaydb:flyway-core')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 
+    implementation group: 'io.vavr', name: 'vavr', version: '0.10.4'
+
 
     testRuntimeOnly('com.h2database:h2:')
 

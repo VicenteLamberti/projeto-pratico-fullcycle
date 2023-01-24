@@ -1,7 +1,6 @@
-package com.fullcycle.vicente.infrastructure;
+package com.fullcycle.vicente;
 
 
-import com.fullcycle.vicente.infrastructure.category.CategoryMySQLGatewayTest;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -27,26 +26,9 @@ import java.util.Collection;
 @ComponentScan(includeFilters = {
         @ComponentScan.Filter(type = FilterType.REGEX,pattern = ".*[MySQLGateway]")
 })
-@ExtendWith(MySQLGatewayTest.CleanUpExtensions.class)
+@ExtendWith(CleanUpExtension.class)
 public @interface MySQLGatewayTest {
 
-    /**
-     * Essa classe foi criada pra auxiliar na limpeza antes dos testes, é importado com
-     * @ExtendWith(CategoryMySQLGatewayTest.CleanUpExtensions.class)
-     */
-    class  CleanUpExtensions implements BeforeEachCallback {
-        @Override
-        public void beforeEach(ExtensionContext context)  {
-            final Collection<CrudRepository> repositories = SpringExtension
-                    .getApplicationContext(context)
-                    .getBeansOfType(CrudRepository.class)
-                    .values();
 
-            cleanUp(repositories);
-        }
-        private void cleanUp(Collection<CrudRepository> repositories) {
-            repositories.forEach(CrudRepository::deleteAll);
-        }
-    }
 
 }

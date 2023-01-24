@@ -1,8 +1,7 @@
 package com.fullcycle.vicente.infrastructure.category.persistence;
 
 import com.fullcycle.vicente.domain.category.Category;
-import com.fullcycle.vicente.infrastructure.MySQLGatewayTest;
-import com.fullcycle.vicente.infrastructure.category.CategoryMySQLGateway;
+import com.fullcycle.vicente.MySQLGatewayTest;
 import org.hibernate.PropertyValueException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
