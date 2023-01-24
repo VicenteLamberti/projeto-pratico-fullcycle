@@ -23,11 +23,5 @@ public class Main {
 
     }
 
-    @Bean
-    @DependsOnDatabaseInitialization
-    ApplicationRunner runner(CreateCategoryUseCase createCategoryUseCase){
-        return  args -> {
 
-        };
-    }
 }

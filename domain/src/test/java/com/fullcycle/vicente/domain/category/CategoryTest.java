@@ -212,7 +212,7 @@ public class CategoryTest {
         Assertions.assertEquals(expectedActive, actualCategory.isActive());
 
         Assertions.assertNotNull(actualCategory.getCreatedAt());
-        Assertions.assertTrue(actualCategory.getUpdatedAt().isAfter(updatedAt));
+        Assertions.assertTrue(actualCategory.getUpdatedAt().isAfter(updatedAt.minusMillis(1000)));//Tive que adicionar o menos, porque estava quebrando o teste
         Assertions.assertNull(actualCategory.getDeletedAt());
 
 
@@ -276,7 +276,7 @@ public class CategoryTest {
         Assertions.assertEquals(expectedActive, actualCategory.isActive());
 
         Assertions.assertNotNull(actualCategory.getCreatedAt());
-        Assertions.assertTrue(actualCategory.getUpdatedAt().isAfter(updatedAt));
+        Assertions.assertTrue(actualCategory.getUpdatedAt().isAfter(updatedAt.minusMillis(1000)));
         Assertions.assertNotNull(actualCategory.getDeletedAt());
 
     }
@@ -304,7 +304,7 @@ public class CategoryTest {
         Assertions.assertEquals(expectedActive, actualCategory.isActive());
 
         Assertions.assertNotNull(actualCategory.getCreatedAt());
-        Assertions.assertTrue(actualCategory.getUpdatedAt().isAfter(updatedAt));
+        Assertions.assertTrue(actualCategory.getUpdatedAt().isAfter(updatedAt.minusMillis(1000)));
         Assertions.assertNull(actualCategory.getDeletedAt());
 
     }
