@@ -40,7 +40,7 @@ public class CreateCategoryUseCaseIT {
 
         final var actualOutput =  useCase.execute(aCommand).get();
 
-        final CategoryJPAEntity actualCategory = repository.findById(actualOutput.id().getValue()).get();
+        final CategoryJPAEntity actualCategory = repository.findById(actualOutput.id()).get();
 
         Assertions.assertEquals(1,repository.count());
 
@@ -97,7 +97,7 @@ public class CreateCategoryUseCaseIT {
         Assertions.assertNotNull(actualOutput.id());
         Assertions.assertEquals(1,repository.count());
 
-        CategoryJPAEntity actualCategory = repository.findById(actualOutput.id().getValue()).get();
+        CategoryJPAEntity actualCategory = repository.findById(actualOutput.id()).get();
 
         Assertions.assertEquals(expectedName,actualCategory.getName());
         Assertions.assertEquals(expectedDescription,actualCategory.getDescription());

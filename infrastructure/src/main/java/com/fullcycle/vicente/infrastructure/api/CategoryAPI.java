@@ -1,16 +1,14 @@
 package com.fullcycle.vicente.infrastructure.api;
 
 import com.fullcycle.vicente.domain.pagination.Pagination;
+import com.fullcycle.vicente.infrastructure.category.models.CreateCategoryApiInput;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 
 @RequestMapping("/categories")
@@ -24,7 +22,7 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "422" ,description = "A validation error war thrown"),
             @ApiResponse(responseCode = "500" ,description = "Internal error")
     })
-    ResponseEntity<?>createCategory();
+    ResponseEntity<?>createCategory(@RequestBody CreateCategoryApiInput input);
 
     @GetMapping
     @Operation(summary = "List all categories paginated")
