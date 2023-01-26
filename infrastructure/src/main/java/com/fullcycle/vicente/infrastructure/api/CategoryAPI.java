@@ -1,6 +1,7 @@
 package com.fullcycle.vicente.infrastructure.api;
 
 import com.fullcycle.vicente.domain.pagination.Pagination;
+import com.fullcycle.vicente.infrastructure.category.models.CategoryApiOutput;
 import com.fullcycle.vicente.infrastructure.category.models.CreateCategoryApiInput;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -39,6 +40,20 @@ public interface CategoryAPI {
             @RequestParam(name="dir",required = false, defaultValue = "asc") final String direction
 
     );
+
+    @GetMapping(
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            value = "{id}"
+
+    )
+    @Operation(summary = "Get a category by identifier")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Category retrivied successfully"),
+            @ApiResponse(responseCode = "404" ,description = "Category not found"),
+            @ApiResponse(responseCode = "500" ,description = "Internal error")
+    })
+    CategoryApiOutput getById(@PathVariable(name = "id")String id);
 
 
 }
