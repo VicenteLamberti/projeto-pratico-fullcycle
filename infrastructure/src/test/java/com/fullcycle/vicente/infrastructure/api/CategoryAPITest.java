@@ -7,6 +7,9 @@ import com.fullcycle.vicente.application.category.create.CreateCategoryCommand;
 import com.fullcycle.vicente.application.category.create.CreateCategoryOutput;
 import com.fullcycle.vicente.application.category.create.CreateCategoryUseCase;
 import com.fullcycle.vicente.domain.category.CategoryID;
+import com.fullcycle.vicente.domain.exceptions.DomainException;
+import com.fullcycle.vicente.domain.validation.Error;
+import com.fullcycle.vicente.domain.validation.handler.Notification;
 import com.fullcycle.vicente.infrastructure.category.models.CreateCategoryApiInput;
 import com.fullcycle.vicente.infrastructure.category.persistence.CategoryJPAEntity;
 import io.vavr.API;
@@ -66,6 +69,81 @@ public class CategoryAPITest {
                 cmd -> Objects.equals(expectedName, cmd.name())
                 && Objects.equals(expectedDescription, cmd.description())
                 && Objects.equals(expectedIsActive, cmd.isActive())
+
+        ));
+
+    }
+
+
+
+    @Test
+    public void givenAInvalidName_whenCallCreateCategory_thenShouldReturnNotification() throws Exception {
+        final String expectedName = null;
+        final String expectedDescription = "A categoria mais assistida";
+        final boolean expectedIsActive = true;
+        final String expectedMessage = "'name' should not be null";
+
+        final CreateCategoryApiInput aInput = new CreateCategoryApiInput(expectedName,expectedDescription,expectedIsActive);
+
+        Mockito.when(categoryUseCase.execute(Mockito.any()))
+                .thenReturn(API.Left(Notification.create(new Error(expectedMessage))));
+
+        final var request = MockMvcRequestBuilders
+                .post("/categories")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(this.mapper.writeValueAsString(aInput));
+
+        this.mvc.perform(request)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpectAll(
+                        MockMvcResultMatchers.status().isUnprocessableEntity(),
+                        MockMvcResultMatchers.header().string("Location",Matchers.nullValue()),
+                        MockMvcResultMatchers.header().string("Content-Type",MediaType.APPLICATION_JSON_VALUE),
+                        MockMvcResultMatchers.jsonPath("$.errors", Matchers.hasSize(1)),
+                        MockMvcResultMatchers.jsonPath("$.errors[0].message", Matchers.equalTo(expectedMessage))
+                );
+
+        Mockito.verify(categoryUseCase,Mockito.times(1)).execute(Mockito.argThat(
+                cmd -> Objects.equals(expectedName, cmd.name())
+                        && Objects.equals(expectedDescription, cmd.description())
+                        && Objects.equals(expectedIsActive, cmd.isActive())
+
+        ));
+
+    }
+
+
+    @Test
+    public void givenAInvalidCommand_whenCallCreateCategory_thenShouldReturnNotification() throws Exception {
+        final String expectedName = null;
+        final String expectedDescription = "A categoria mais assistida";
+        final boolean expectedIsActive = true;
+        final String expectedMessage = "'name' should not be null";
+
+        final CreateCategoryApiInput aInput = new CreateCategoryApiInput(expectedName,expectedDescription,expectedIsActive);
+
+        Mockito.when(categoryUseCase.execute(Mockito.any()))
+                .thenThrow(DomainException.with(new Error(expectedMessage)));
+
+        final var request = MockMvcRequestBuilders
+                .post("/categories")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(this.mapper.writeValueAsString(aInput));
+
+        this.mvc.perform(request)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpectAll(
+                        MockMvcResultMatchers.status().isUnprocessableEntity(),
+                        MockMvcResultMatchers.header().string("Location",Matchers.nullValue()),
+                        MockMvcResultMatchers.header().string("Content-Type",MediaType.APPLICATION_JSON_VALUE),
+                        MockMvcResultMatchers.jsonPath("$.errors", Matchers.hasSize(1)),
+                        MockMvcResultMatchers.jsonPath("$.errors[0].message", Matchers.equalTo(expectedMessage))
+                );
+
+        Mockito.verify(categoryUseCase,Mockito.times(1)).execute(Mockito.argThat(
+                cmd -> Objects.equals(expectedName, cmd.name())
+                        && Objects.equals(expectedDescription, cmd.description())
+                        && Objects.equals(expectedIsActive, cmd.isActive())
 
         ));
 
