@@ -6,6 +6,7 @@ import com.fullcycle.vicente.domain.category.Category;
 import com.fullcycle.vicente.domain.category.CategoryGateway;
 import com.fullcycle.vicente.domain.category.CategoryID;
 import com.fullcycle.vicente.domain.exceptions.DomainException;
+import com.fullcycle.vicente.domain.exceptions.NotFoundException;
 import com.fullcycle.vicente.domain.validation.handler.Notification;
 import com.fullcycle.vicente.infrastructure.category.persistence.CategoryJPAEntity;
 import com.fullcycle.vicente.infrastructure.category.persistence.CategoryRepository;
@@ -60,7 +61,7 @@ public class UpdateCategoryUseCaseIT {
 
 
         Mockito.verify(categoryGateway, Mockito.times(1)).findById(expectedId);
-        final CategoryJPAEntity actualCategory = categoryRepository.findById(actualOutput.id().getValue()).get();
+        final CategoryJPAEntity actualCategory = categoryRepository.findById(actualOutput.id()).get();
 
 
 
@@ -137,7 +138,7 @@ public class UpdateCategoryUseCaseIT {
 
 
         Mockito.verify(categoryGateway, Mockito.times(1)).findById(expectedId);
-        final CategoryJPAEntity actualCategory = categoryRepository.findById(actualOutput.id().getValue()).get();
+        final CategoryJPAEntity actualCategory = categoryRepository.findById(actualOutput.id()).get();
 
 
         Assertions.assertEquals(expectedName,actualCategory.getName());
@@ -215,10 +216,10 @@ public class UpdateCategoryUseCaseIT {
                 expectedIsActive);
 
 
-        DomainException actualException = Assertions.assertThrows(DomainException.class, ()-> useCase.execute(aCommand));
+        NotFoundException actualException = Assertions.assertThrows(NotFoundException.class, ()-> useCase.execute(aCommand));
 
-        Assertions.assertEquals(expectedErrorMessage, actualException.getErrors().get(0).message());
-        Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
+        Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
+
 
         Mockito.verify(categoryGateway, Mockito.times(1)).findById(Mockito.eq(CategoryID.from(expectedId)));
         Mockito.verify(categoryGateway,Mockito.times(0)).update(Mockito.any());

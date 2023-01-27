@@ -7,6 +7,7 @@ import com.fullcycle.vicente.domain.category.Category;
 import com.fullcycle.vicente.domain.category.CategoryGateway;
 import com.fullcycle.vicente.domain.category.CategoryID;
 import com.fullcycle.vicente.domain.exceptions.DomainException;
+import com.fullcycle.vicente.domain.exceptions.NotFoundException;
 import com.fullcycle.vicente.domain.validation.handler.Notification;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.internal.matchers.Not;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.AdditionalAnswers;
 
@@ -219,10 +221,9 @@ public class UpdateCategoryUseCaseTest {
 
 
 
-        DomainException actualException = Assertions.assertThrows(DomainException.class, ()-> useCase.execute(aCommand));
+        NotFoundException actualException = Assertions.assertThrows(NotFoundException.class, ()-> useCase.execute(aCommand));
 
-        Assertions.assertEquals(expectedErrorMessage, actualException.getErrors().get(0).message());
-        Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
+        Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
 
         Mockito.verify(categoryGateway, Mockito.times(1)).findById(Mockito.eq(CategoryID.from(expectedId)));
         Mockito.verify(categoryGateway,Mockito.times(0)).update(Mockito.any());

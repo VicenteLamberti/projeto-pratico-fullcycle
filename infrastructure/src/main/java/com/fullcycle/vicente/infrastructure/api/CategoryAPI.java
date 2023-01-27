@@ -3,6 +3,7 @@ package com.fullcycle.vicente.infrastructure.api;
 import com.fullcycle.vicente.domain.pagination.Pagination;
 import com.fullcycle.vicente.infrastructure.category.models.CategoryApiOutput;
 import com.fullcycle.vicente.infrastructure.category.models.CreateCategoryApiInput;
+import com.fullcycle.vicente.infrastructure.category.models.UpdateCategoryApiInput;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -54,6 +55,23 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "500" ,description = "Internal error")
     })
     CategoryApiOutput getById(@PathVariable(name = "id")String id);
+
+
+
+    @PutMapping(
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            value = "{id}"
+
+    )
+    @Operation(summary = "Update a category by identifier")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Category updated and retrivied successfully"),
+            @ApiResponse(responseCode = "404" ,description = "Category not found"),
+            @ApiResponse(responseCode = "500" ,description = "Internal error")
+    })
+    ResponseEntity<?> updateById(@PathVariable(name = "id")String id, @RequestBody UpdateCategoryApiInput input);
+
 
 
 }
