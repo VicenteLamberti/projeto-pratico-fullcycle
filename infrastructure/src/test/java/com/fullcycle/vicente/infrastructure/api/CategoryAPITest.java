@@ -10,6 +10,7 @@ import com.fullcycle.vicente.application.category.update.UpdateCategoryUseCase;
 import com.fullcycle.vicente.domain.category.Category;
 import com.fullcycle.vicente.domain.category.CategoryID;
 import com.fullcycle.vicente.domain.exceptions.DomainException;
+import com.fullcycle.vicente.domain.exceptions.NotFoundException;
 import com.fullcycle.vicente.domain.validation.Error;
 import com.fullcycle.vicente.domain.validation.handler.Notification;
 import com.fullcycle.vicente.infrastructure.category.models.CreateCategoryApiInput;
@@ -188,22 +189,17 @@ public class CategoryAPITest {
     @Test
     public void givenAInvalidId_whenCallsGetCategory_shouldReturnNotFound() throws Exception {
         final String expectedErrorMessage = "Category with ID 123 was not found";
-        final String aExpectedId = CategoryID.from("123").getValue();
+        final CategoryID aExpectedId = CategoryID.from("123");
 
 
 
         Mockito.when(getCategoryByIdUseCase.execute(Mockito.any()))
-                .thenThrow(DomainException.with(
-                        new Error("Category with ID 123 was not found".formatted(aExpectedId))
-                ));
+                .thenThrow(NotFoundException.with(Category.class, aExpectedId));
 
 
         final var request = MockMvcRequestBuilders
                 .get("/categories/{id}", aExpectedId)
                 .contentType(MediaType.APPLICATION_JSON);
-
-
-
 
         final var response = this.mvc.perform(request)
                 .andDo(MockMvcResultHandlers.print());

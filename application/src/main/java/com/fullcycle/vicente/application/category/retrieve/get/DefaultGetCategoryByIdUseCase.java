@@ -1,8 +1,10 @@
 package com.fullcycle.vicente.application.category.retrieve.get;
 
+import com.fullcycle.vicente.domain.category.Category;
 import com.fullcycle.vicente.domain.category.CategoryGateway;
 import com.fullcycle.vicente.domain.category.CategoryID;
 import com.fullcycle.vicente.domain.exceptions.DomainException;
+import com.fullcycle.vicente.domain.exceptions.NotFoundException;
 import com.fullcycle.vicente.domain.validation.Error;
 import com.fullcycle.vicente.domain.validation.handler.Notification;
 import io.vavr.API;
@@ -27,9 +29,9 @@ public class DefaultGetCategoryByIdUseCase extends  GetCategoryByIdUseCase {
                 .orElseThrow(notFound(anCategoryId));
     }
 
-    private Supplier<DomainException> notFound(CategoryID anId){
-        return ()-> DomainException.with(
-                new Error("Category with ID %s was not found".formatted(anId.getValue()))
+    private Supplier<NotFoundException> notFound(CategoryID anId){
+        return ()-> NotFoundException.with(
+                Category.class,anId
         );
     }
 }
