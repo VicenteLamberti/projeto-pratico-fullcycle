@@ -5,6 +5,7 @@ import com.fullcycle.vicente.domain.category.Category;
 import com.fullcycle.vicente.domain.category.CategoryGateway;
 import com.fullcycle.vicente.domain.category.CategoryID;
 import com.fullcycle.vicente.domain.exceptions.DomainException;
+import com.fullcycle.vicente.domain.exceptions.NotFoundException;
 import com.fullcycle.vicente.infrastructure.category.persistence.CategoryJPAEntity;
 import com.fullcycle.vicente.infrastructure.category.persistence.CategoryRepository;
 import org.junit.jupiter.api.Assertions;
@@ -75,7 +76,7 @@ public class GetCategoryByIdUseCaseIT {
 
 
         final DomainException actualException =
-                Assertions.assertThrows(DomainException.class, () -> useCase.execute(aExpectedId.getValue()));
+                Assertions.assertThrows(NotFoundException.class, () -> useCase.execute(aExpectedId.getValue()));
 
         Assertions.assertEquals(expectedErrorMessage,actualException.getMessage());
     }

@@ -4,6 +4,7 @@ import com.fullcycle.vicente.domain.category.Category;
 import com.fullcycle.vicente.domain.category.CategoryGateway;
 import com.fullcycle.vicente.domain.category.CategoryID;
 import com.fullcycle.vicente.domain.exceptions.DomainException;
+import com.fullcycle.vicente.domain.exceptions.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,8 +62,8 @@ public class GetCategoryByIdUseCaseTest {
         Mockito.when(categoryGateway.findById(aExpectedId))
                 .thenReturn(Optional.empty());
 
-        final DomainException actualException =
-                Assertions.assertThrows(DomainException.class, () -> useCase.execute(aExpectedId.getValue()));
+        final NotFoundException actualException =
+                Assertions.assertThrows(NotFoundException.class, () -> useCase.execute(aExpectedId.getValue()));
 
         Assertions.assertEquals(expectedErrorMessage,actualException.getMessage());
     }
