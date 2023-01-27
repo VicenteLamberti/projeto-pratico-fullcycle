@@ -75,7 +75,7 @@ public class GetCategoryByIdUseCaseIT {
 
 
 
-        final DomainException actualException =
+        final NotFoundException actualException =
                 Assertions.assertThrows(NotFoundException.class, () -> useCase.execute(aExpectedId.getValue()));
 
         Assertions.assertEquals(expectedErrorMessage,actualException.getMessage());

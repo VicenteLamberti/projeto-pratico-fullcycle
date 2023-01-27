@@ -8,13 +8,13 @@ import com.fullcycle.vicente.domain.pagination.Pagination;
 import com.fullcycle.vicente.infrastructure.category.persistence.CategoryJPAEntity;
 import com.fullcycle.vicente.infrastructure.category.persistence.CategoryRepository;
 import com.fullcycle.vicente.infrastructure.utils.SpecificationUtils;
-import jakarta.persistence.criteria.*;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
 
 import java.util.Optional;
 
@@ -22,7 +22,7 @@ import java.util.Optional;
 public class CategoryMySQLGateway implements CategoryGateway {
     private final CategoryRepository repository;
 
-    public CategoryMySQLGateway(CategoryRepository repository) {
+    public CategoryMySQLGateway(final CategoryRepository repository) {
         this.repository = repository;
     }
 
