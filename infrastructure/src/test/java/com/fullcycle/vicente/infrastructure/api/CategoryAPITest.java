@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullcycle.vicente.ControllerTest;
 import com.fullcycle.vicente.application.category.create.CreateCategoryOutput;
 import com.fullcycle.vicente.application.category.create.CreateCategoryUseCase;
+import com.fullcycle.vicente.application.category.delete.DeleteCategoryUseCase;
 import com.fullcycle.vicente.application.category.retrieve.get.CategoryOutput;
 import com.fullcycle.vicente.application.category.retrieve.get.GetCategoryByIdUseCase;
 import com.fullcycle.vicente.application.category.update.UpdateCategoryOutput;
@@ -46,6 +47,9 @@ public class CategoryAPITest {
 
     @MockBean
     private UpdateCategoryUseCase updateCategoryUseCase;
+
+    @MockBean
+    private DeleteCategoryUseCase deleteCategoryUseCase;
 
     @Autowired
     private ObjectMapper mapper;
@@ -322,6 +326,37 @@ public class CategoryAPITest {
 
 
 
+    }
+
+
+
+    @Test
+    public void givenAValidId_whenCallsDeleteCategory_shouldReturnNoContent() throws Exception{
+        final String expectedId = "123";
+        final String expectedName = "Filmes";
+        final String expectedDescription = "A categoria mais assistida";
+        final boolean expectedIsActive = true;
+
+
+
+
+        Mockito.doNothing()
+                .when(deleteCategoryUseCase).execute(Mockito.any());
+
+
+        final var request = MockMvcRequestBuilders
+                .delete("/categories/{id}", expectedId)
+                .contentType(MediaType.APPLICATION_JSON);
+
+
+        final var response = this.mvc.perform(request)
+                .andDo(MockMvcResultHandlers.print());
+
+
+        response.andExpect(MockMvcResultMatchers.status().isNoContent());
+
+
+        Mockito.verify(deleteCategoryUseCase,Mockito.times(1)).execute(expectedId);
     }
 
 }

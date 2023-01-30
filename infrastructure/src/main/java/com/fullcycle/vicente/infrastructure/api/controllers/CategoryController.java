@@ -3,6 +3,7 @@ package com.fullcycle.vicente.infrastructure.api.controllers;
 import com.fullcycle.vicente.application.category.create.CreateCategoryCommand;
 import com.fullcycle.vicente.application.category.create.CreateCategoryOutput;
 import com.fullcycle.vicente.application.category.create.CreateCategoryUseCase;
+import com.fullcycle.vicente.application.category.delete.DeleteCategoryUseCase;
 import com.fullcycle.vicente.application.category.retrieve.get.GetCategoryByIdUseCase;
 import com.fullcycle.vicente.application.category.update.UpdateCategoryCommand;
 import com.fullcycle.vicente.application.category.update.UpdateCategoryOutput;
@@ -29,12 +30,15 @@ public class CategoryController implements CategoryAPI {
 
     private final UpdateCategoryUseCase updateCategoryUseCase;
 
+    private final DeleteCategoryUseCase deleteCategoryUseCase;
+
     public CategoryController(CreateCategoryUseCase createCategoryUseCase, GetCategoryByIdUseCase getCategoryByIdUseCase,
-                              UpdateCategoryUseCase updateCategoryUseCase) {
+                              UpdateCategoryUseCase updateCategoryUseCase,DeleteCategoryUseCase deleteCategoryUseCase) {
 
         this.createCategoryUseCase = Objects.requireNonNull(createCategoryUseCase);
         this.getCategoryByIdUseCase = Objects.requireNonNull(getCategoryByIdUseCase);
         this.updateCategoryUseCase = Objects.requireNonNull(updateCategoryUseCase);
+        this.deleteCategoryUseCase = Objects.requireNonNull(deleteCategoryUseCase);
 
     }
 
@@ -85,6 +89,11 @@ public class CategoryController implements CategoryAPI {
                 ResponseEntity.ok(output);
 
         return this.updateCategoryUseCase.execute(aCommand).fold(onError,onSuccess);
+    }
+
+    @Override
+    public void delete(String id) {
+        this.deleteCategoryUseCase.execute(id);
     }
 
 

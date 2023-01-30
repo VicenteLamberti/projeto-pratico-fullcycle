@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -71,6 +72,22 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "500" ,description = "Internal error")
     })
     ResponseEntity<?> updateById(@PathVariable(name = "id")String id, @RequestBody UpdateCategoryApiInput input);
+
+
+    @DeleteMapping(
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            value = "{id}"
+
+    )
+    @Operation(summary = "Delete a category by identifier")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Category deleted successfully"),
+            @ApiResponse(responseCode = "404" ,description = "Category not found"),
+            @ApiResponse(responseCode = "500" ,description = "Internal error")
+    })
+    void delete(@PathVariable(name = "id")String id);
 
 
 
