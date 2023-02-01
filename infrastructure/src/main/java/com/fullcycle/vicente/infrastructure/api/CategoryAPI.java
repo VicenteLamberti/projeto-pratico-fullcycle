@@ -1,9 +1,10 @@
 package com.fullcycle.vicente.infrastructure.api;
 
 import com.fullcycle.vicente.domain.pagination.Pagination;
-import com.fullcycle.vicente.infrastructure.category.models.CategoryApiOutput;
-import com.fullcycle.vicente.infrastructure.category.models.CreateCategoryApiInput;
-import com.fullcycle.vicente.infrastructure.category.models.UpdateCategoryApiInput;
+import com.fullcycle.vicente.infrastructure.category.models.CategoryListResponse;
+import com.fullcycle.vicente.infrastructure.category.models.CategoryResponse;
+import com.fullcycle.vicente.infrastructure.category.models.CreateCategoryRequest;
+import com.fullcycle.vicente.infrastructure.category.models.UpdateCategoryRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -25,7 +26,7 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "422" ,description = "A validation error war thrown"),
             @ApiResponse(responseCode = "500" ,description = "Internal error")
     })
-    ResponseEntity<?>createCategory(@RequestBody CreateCategoryApiInput input);
+    ResponseEntity<?>createCategory(@RequestBody CreateCategoryRequest input);
 
     @GetMapping
     @Operation(summary = "List all categories paginated")
@@ -34,7 +35,7 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "422" ,description = "Invalid parameter was received"),
             @ApiResponse(responseCode = "500" ,description = "Internal error")
     })
-    Pagination<?> listCategories(
+    Pagination<CategoryListResponse> listCategories(
             @RequestParam(name="search",required = false, defaultValue = "") final String search,
             @RequestParam(name="page",required = false, defaultValue = "0") final int page,
             @RequestParam(name="perPage",required = false, defaultValue = "10") final int perPage,
@@ -55,7 +56,7 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "404" ,description = "Category not found"),
             @ApiResponse(responseCode = "500" ,description = "Internal error")
     })
-    CategoryApiOutput getById(@PathVariable(name = "id")String id);
+    CategoryResponse getById(@PathVariable(name = "id")String id);
 
 
 
@@ -71,7 +72,7 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "404" ,description = "Category not found"),
             @ApiResponse(responseCode = "500" ,description = "Internal error")
     })
-    ResponseEntity<?> updateById(@PathVariable(name = "id")String id, @RequestBody UpdateCategoryApiInput input);
+    ResponseEntity<?> updateById(@PathVariable(name = "id")String id, @RequestBody UpdateCategoryRequest input);
 
 
     @DeleteMapping(

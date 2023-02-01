@@ -13,19 +13,16 @@ import com.fullcycle.vicente.application.category.update.UpdateCategoryOutput;
 import com.fullcycle.vicente.application.category.update.UpdateCategoryUseCase;
 import com.fullcycle.vicente.domain.category.Category;
 import com.fullcycle.vicente.domain.category.CategoryID;
-import com.fullcycle.vicente.domain.category.CategorySearchQuery;
 import com.fullcycle.vicente.domain.exceptions.DomainException;
 import com.fullcycle.vicente.domain.exceptions.NotFoundException;
 import com.fullcycle.vicente.domain.pagination.Pagination;
 import com.fullcycle.vicente.domain.validation.Error;
 import com.fullcycle.vicente.domain.validation.handler.Notification;
-import com.fullcycle.vicente.infrastructure.category.models.CreateCategoryApiInput;
-import com.fullcycle.vicente.infrastructure.category.models.UpdateCategoryApiInput;
+import com.fullcycle.vicente.infrastructure.category.models.CreateCategoryRequest;
+import com.fullcycle.vicente.infrastructure.category.models.UpdateCategoryRequest;
 import io.vavr.API;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -37,7 +34,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @ControllerTest(controllers = CategoryAPI.class)
 public class CategoryAPITest {
@@ -70,7 +66,7 @@ public class CategoryAPITest {
         final String expectedDescription = "A categoria mais assistida";
         final boolean expectedIsActive = true;
 
-        final CreateCategoryApiInput aInput = new CreateCategoryApiInput(expectedName,expectedDescription,expectedIsActive);
+        final CreateCategoryRequest aInput = new CreateCategoryRequest(expectedName,expectedDescription,expectedIsActive);
 
         Mockito.when(createCategoryUseCase.execute(Mockito.any()))
                 .thenReturn(API.Right(CreateCategoryOutput.from("123")));
@@ -107,7 +103,7 @@ public class CategoryAPITest {
         final boolean expectedIsActive = true;
         final String expectedMessage = "'name' should not be null";
 
-        final CreateCategoryApiInput aInput = new CreateCategoryApiInput(expectedName,expectedDescription,expectedIsActive);
+        final CreateCategoryRequest aInput = new CreateCategoryRequest(expectedName,expectedDescription,expectedIsActive);
 
         Mockito.when(createCategoryUseCase.execute(Mockito.any()))
                 .thenReturn(API.Left(Notification.create(new Error(expectedMessage))));
@@ -144,7 +140,7 @@ public class CategoryAPITest {
         final boolean expectedIsActive = true;
         final String expectedMessage = "'name' should not be null";
 
-        final CreateCategoryApiInput aInput = new CreateCategoryApiInput(expectedName,expectedDescription,expectedIsActive);
+        final CreateCategoryRequest aInput = new CreateCategoryRequest(expectedName,expectedDescription,expectedIsActive);
 
         Mockito.when(createCategoryUseCase.execute(Mockito.any()))
                 .thenThrow(DomainException.with(new Error(expectedMessage)));
@@ -239,7 +235,7 @@ public class CategoryAPITest {
         Mockito.when(updateCategoryUseCase.execute(Mockito.any()))
                 .thenReturn(API.Right(UpdateCategoryOutput.from(expectedId)));
 
-        final UpdateCategoryApiInput aInput = new UpdateCategoryApiInput(expectedName,expectedDescription,expectedIsActive);
+        final UpdateCategoryRequest aInput = new UpdateCategoryRequest(expectedName,expectedDescription,expectedIsActive);
         final var request = MockMvcRequestBuilders
                 .put("/categories/{id}", expectedId)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -274,7 +270,7 @@ public class CategoryAPITest {
         Mockito.when(updateCategoryUseCase.execute(Mockito.any()))
                 .thenThrow(NotFoundException.with(Category.class,CategoryID.from(expectedId)));
 
-        final UpdateCategoryApiInput aInput = new UpdateCategoryApiInput(expectedName,expectedDescription,expectedIsActive);
+        final UpdateCategoryRequest aInput = new UpdateCategoryRequest(expectedName,expectedDescription,expectedIsActive);
         final var request = MockMvcRequestBuilders
                 .put("/categories/{id}", expectedId)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -312,7 +308,7 @@ public class CategoryAPITest {
         Mockito.when(updateCategoryUseCase.execute(Mockito.any()))
                 .thenReturn(API.Left(Notification.create(new Error(expectedMessage))));
 
-        final UpdateCategoryApiInput aInput = new UpdateCategoryApiInput(expectedName,expectedDescription,expectedIsActive);
+        final UpdateCategoryRequest aInput = new UpdateCategoryRequest(expectedName,expectedDescription,expectedIsActive);
         final var request = MockMvcRequestBuilders
                 .put("/categories/{id}", expectedId)
                 .contentType(MediaType.APPLICATION_JSON)

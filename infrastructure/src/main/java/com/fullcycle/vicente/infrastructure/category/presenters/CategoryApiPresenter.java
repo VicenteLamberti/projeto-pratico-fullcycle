@@ -1,16 +1,18 @@
 package com.fullcycle.vicente.infrastructure.category.presenters;
 
 import com.fullcycle.vicente.application.category.retrieve.get.CategoryOutput;
-import com.fullcycle.vicente.infrastructure.category.models.CategoryApiOutput;
+import com.fullcycle.vicente.application.category.retrieve.list.CategoryListOutput;
+import com.fullcycle.vicente.infrastructure.category.models.CategoryResponse;
+import com.fullcycle.vicente.infrastructure.category.models.CategoryListResponse;
 
 import java.util.function.Function;
 
 public interface CategoryApiPresenter {
 
 
-    Function<CategoryOutput, CategoryApiOutput> present =
+    Function<CategoryOutput, CategoryResponse> present =
             output ->
-                    new CategoryApiOutput(
+                    new CategoryResponse(
                             output.id().getValue(),
                             output.name(),
                             output.description(),
@@ -22,14 +24,25 @@ public interface CategoryApiPresenter {
 
 
     //    pode ser assim
-    static CategoryApiOutput present(final CategoryOutput output){
-        return new CategoryApiOutput(
+    static CategoryResponse present(final CategoryOutput output){
+        return new CategoryResponse(
                 output.id().getValue(),
                 output.name(),
                 output.description(),
                 output.isActive(),
                 output.createdAt(),
                 output.updatedAt(),
+                output.deletedAt()
+        );
+    }
+
+    static CategoryListResponse present(final CategoryListOutput output){
+        return new CategoryListResponse(
+                output.id().getValue(),
+                output.name(),
+                output.description(),
+                output.isActive(),
+                output.createdAt(),
                 output.deletedAt()
         );
     }
