@@ -4,6 +4,7 @@ import com.fullcycle.vicente.E2ETest;
 import com.fullcycle.vicente.domain.category.CategoryID;
 import com.fullcycle.vicente.infrastructure.category.models.CategoryResponse;
 import com.fullcycle.vicente.infrastructure.category.models.CreateCategoryRequest;
+import com.fullcycle.vicente.infrastructure.category.models.UpdateCategoryRequest;
 import com.fullcycle.vicente.infrastructure.category.persistence.CategoryJPAEntity;
 import com.fullcycle.vicente.infrastructure.category.persistence.CategoryRepository;
 import com.fullcycle.vicente.infrastructure.configuration.json.Json;
@@ -179,6 +180,7 @@ public class CategoryE2ETest {
         Assertions.assertNull(actualCategory.getDeletedAt());
     }
 
+
     @Test
     public void asACatalogAdminIsShouldBeAbleToSeeATretatedErrorByGettingNotFound() throws Exception {
         final MockHttpServletRequestBuilder aRequest = MockMvcRequestBuilders
@@ -190,6 +192,114 @@ public class CategoryE2ETest {
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message",Matchers.equalTo("Category with ID 123 was not found")));
 
+    }
+
+
+    @Test
+    public void asACatalogAdminIsShouldBeAbleToUpdateACategoryByItsIdentifier() throws Exception {
+        Assertions.assertEquals(0,categoryRepository.count());
+        final CategoryID actualId = givenACategory("Movies",null,true);
+
+        final String expectedName = "Filmes";
+        final String expectedDescription = "A categoria mais assistida";
+        final boolean expectedIsActive = true;
+
+        final UpdateCategoryRequest aRequestBody =  new UpdateCategoryRequest(expectedName,expectedDescription,expectedIsActive);
+
+        final MockHttpServletRequestBuilder aRequest =
+                MockMvcRequestBuilders
+                        .put("/categories/"+actualId.getValue())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(Json.writeValueAsString(aRequestBody));
+
+
+
+        this.mvc.perform(aRequest)
+                        .andExpect(MockMvcResultMatchers.status().isOk());
+
+        final CategoryJPAEntity actualCategory = categoryRepository.findById(actualId.getValue()).get();
+
+
+        Assertions.assertEquals(expectedName,actualCategory.getName());
+        Assertions.assertEquals(expectedDescription,actualCategory.getDescription());
+        Assertions.assertEquals(expectedIsActive,actualCategory.isActive());
+        Assertions.assertNotNull(actualCategory.getCreatedAt());
+        Assertions.assertNotNull(actualCategory.getUpdatedAt());
+        Assertions.assertNull(actualCategory.getDeletedAt());
+    }
+
+    @Test
+    public void asACatalogAdminIsShouldBeAbleToInactivateACategoryByItsIdentifier() throws Exception {
+
+        final String expectedName = "Filmes";
+        final String expectedDescription = "A categoria mais assistida";
+        final boolean expectedIsActive = false;
+
+
+        Assertions.assertEquals(0,categoryRepository.count());
+        final CategoryID actualId = givenACategory(expectedName,expectedDescription,true);
+
+
+
+        final UpdateCategoryRequest aRequestBody =  new UpdateCategoryRequest(expectedName,expectedDescription,expectedIsActive);
+
+        final MockHttpServletRequestBuilder aRequest =
+                MockMvcRequestBuilders
+                        .put("/categories/"+actualId.getValue())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(Json.writeValueAsString(aRequestBody));
+
+
+
+        this.mvc.perform(aRequest)
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        final CategoryJPAEntity actualCategory = categoryRepository.findById(actualId.getValue()).get();
+
+
+        Assertions.assertEquals(expectedName,actualCategory.getName());
+        Assertions.assertEquals(expectedDescription,actualCategory.getDescription());
+        Assertions.assertEquals(expectedIsActive,actualCategory.isActive());
+        Assertions.assertNotNull(actualCategory.getCreatedAt());
+        Assertions.assertNotNull(actualCategory.getUpdatedAt());
+        Assertions.assertNotNull(actualCategory.getDeletedAt());
+    }
+
+    @Test
+    public void asACatalogAdminIsShouldBeAbleToActivateACategoryByItsIdentifier() throws Exception {
+
+        final String expectedName = "Filmes";
+        final String expectedDescription = "A categoria mais assistida";
+        final boolean expectedIsActive = true;
+
+
+        Assertions.assertEquals(0,categoryRepository.count());
+        final CategoryID actualId = givenACategory(expectedName,expectedDescription,false);
+
+
+
+        final UpdateCategoryRequest aRequestBody =  new UpdateCategoryRequest(expectedName,expectedDescription,expectedIsActive);
+
+        final MockHttpServletRequestBuilder aRequest =
+                MockMvcRequestBuilders
+                        .put("/categories/"+actualId.getValue())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(Json.writeValueAsString(aRequestBody));
+
+
+
+        this.mvc.perform(aRequest)
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        final CategoryJPAEntity actualCategory = categoryRepository.findById(actualId.getValue()).get();
+
+
+        Assertions.assertEquals(expectedName,actualCategory.getName());
+        Assertions.assertEquals(expectedDescription,actualCategory.getDescription());
+        Assertions.assertEquals(expectedIsActive,actualCategory.isActive());
+        Assertions.assertNotNull(actualCategory.getCreatedAt());
+        Assertions.assertNotNull(actualCategory.getUpdatedAt());
+        Assertions.assertNull(actualCategory.getDeletedAt());
     }
 
 
