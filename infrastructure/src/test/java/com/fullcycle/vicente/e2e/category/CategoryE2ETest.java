@@ -304,6 +304,29 @@ public class CategoryE2ETest {
 
 
 
+    @Test
+    public void asACatalogAdminIsShouldBeAbleToDeleteACategoryByItsIdentifier() throws Exception {
+
+        Assertions.assertEquals(0,categoryRepository.count());
+        final CategoryID actualId = givenACategory("Filmes","A categoria mais assistida",true);
+
+        this.mvc.perform(
+                MockMvcRequestBuilders
+                        .delete("/categories/"+actualId.getValue())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        Assertions.assertFalse(this.categoryRepository.existsById(actualId.getValue()));
+
+
+
+
+
+
+    }
+
+
+
     private ResultActions listCategories(final int page, final int perPage, String search) throws Exception {
         return listCategories(page,perPage,search,"","");
     }
