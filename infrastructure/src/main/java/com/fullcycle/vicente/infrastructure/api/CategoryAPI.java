@@ -45,7 +45,6 @@ public interface CategoryAPI {
     );
 
     @GetMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE,
             value = "{id}"
 
@@ -76,7 +75,6 @@ public interface CategoryAPI {
 
 
     @DeleteMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE,
             value = "{id}"
 
