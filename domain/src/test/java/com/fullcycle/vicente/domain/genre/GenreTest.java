@@ -21,7 +21,7 @@ public class GenreTest {
         Assertions.assertNotNull(actualGenre.getId());
         Assertions.assertNotNull(actualGenre.getName());
         Assertions.assertNotNull(actualGenre.isActive());
-        Assertions.assertEquals(expectedCategories,actualGenre.getCategories().size);
+        Assertions.assertEquals(expectedCategories,actualGenre.getCategories().size());
         Assertions.assertNotNull(actualGenre.getCreatedAt());
         Assertions.assertNotNull(actualGenre.getUpdatedAt());
         Assertions.assertNull(actualGenre.getDeletedAt());
@@ -33,7 +33,7 @@ public class GenreTest {
         final boolean expectedIsActive = true;
 
         final int expectedErrorCount = 1;
-        final String expectedErrorMessage = "'name should not be null";
+        final String expectedErrorMessage = "'name' should not be null";
 
         final Genre actualGenre = Genre.newGenre(expectedName,expectedIsActive);
 
@@ -54,7 +54,7 @@ public class GenreTest {
         final boolean expectedIsActive = true;
 
         final int expectedErrorCount = 1;
-        final String expectedErrorMessage = "'name should not be empty";
+        final String expectedErrorMessage = "'name' should not be empty";
 
         final Genre actualGenre = Genre.newGenre(expectedName,expectedIsActive);
 
@@ -85,7 +85,7 @@ public class GenreTest {
         final boolean expectedIsActive = true;
 
         final int expectedErrorCount = 1;
-        final String expectedErrorMessage = "'name should not be empty";
+        final String expectedErrorMessage = "'name' should  be  than 3 character and 255 character";
 
         final Genre actualGenre = Genre.newGenre(expectedName,expectedIsActive);
 
