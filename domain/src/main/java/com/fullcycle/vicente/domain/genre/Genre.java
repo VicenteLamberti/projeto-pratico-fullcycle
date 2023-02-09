@@ -3,7 +3,9 @@ package com.fullcycle.vicente.domain.genre;
 import com.fullcycle.vicente.domain.AggregateRoot;
 import com.fullcycle.vicente.domain.category.Category;
 import com.fullcycle.vicente.domain.category.CategoryID;
+import com.fullcycle.vicente.domain.exceptions.NotificationException;
 import com.fullcycle.vicente.domain.validation.ValidationHandler;
+import com.fullcycle.vicente.domain.validation.handler.Notification;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -26,6 +28,12 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
         this.categories = categories;
+
+        Notification notification = Notification.create();
+        validate(notification);
+        if(notification.hasError()){
+            throw new NotificationException("Failed to create a Aggregate Genre",notification);
+        }
     }
 
     public static Genre newGenre(final String aName, final boolean isActive){

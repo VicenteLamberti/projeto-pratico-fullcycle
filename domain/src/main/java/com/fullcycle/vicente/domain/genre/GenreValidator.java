@@ -32,8 +32,8 @@ public class GenreValidator extends Validator {
         }
 
         final int length = name.trim().length();
-        if(length > MAX_NAME_LENGTH || length < 3){
-            this.validationHandler().append(new Error("'name' should  be  than 3 character and 255 character"));
+        if(length > MAX_NAME_LENGTH || length < 1){
+            this.validationHandler().append(new Error("'name' should  be  than 1 character and 255 character"));
             return;
         }
     }

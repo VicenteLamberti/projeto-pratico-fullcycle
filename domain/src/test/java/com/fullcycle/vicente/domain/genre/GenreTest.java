@@ -2,6 +2,7 @@ package com.fullcycle.vicente.domain.genre;
 
 
 import com.fullcycle.vicente.domain.exceptions.DomainException;
+import com.fullcycle.vicente.domain.exceptions.NotificationException;
 import com.fullcycle.vicente.domain.validation.handler.ThrowsValidationHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -35,12 +36,10 @@ public class GenreTest {
         final int expectedErrorCount = 1;
         final String expectedErrorMessage = "'name' should not be null";
 
-        final Genre actualGenre = Genre.newGenre(expectedName,expectedIsActive);
 
-        final DomainException actualException = Assertions.assertThrows(
-                DomainException.class,()->
-                        actualGenre.validate(new ThrowsValidationHandler())
-        );
+        final NotificationException actualException = Assertions.assertThrows(NotificationException.class, ()->{
+           Genre.newGenre(expectedName,expectedIsActive);
+        });
 
         Assertions.assertEquals(expectedErrorCount,actualException.getErrors().size());
         Assertions.assertEquals(expectedErrorMessage,actualException.getErrors().get(0).message());
@@ -56,12 +55,10 @@ public class GenreTest {
         final int expectedErrorCount = 1;
         final String expectedErrorMessage = "'name' should not be empty";
 
-        final Genre actualGenre = Genre.newGenre(expectedName,expectedIsActive);
 
-        final DomainException actualException = Assertions.assertThrows(
-                DomainException.class,()->
-                        actualGenre.validate(new ThrowsValidationHandler())
-        );
+        final NotificationException actualException = Assertions.assertThrows(NotificationException.class, ()->{
+            Genre.newGenre(expectedName,expectedIsActive);
+        });
 
         Assertions.assertEquals(expectedErrorCount,actualException.getErrors().size());
         Assertions.assertEquals(expectedErrorMessage,actualException.getErrors().get(0).message());
@@ -85,14 +82,12 @@ public class GenreTest {
         final boolean expectedIsActive = true;
 
         final int expectedErrorCount = 1;
-        final String expectedErrorMessage = "'name' should  be  than 3 character and 255 character";
+        final String expectedErrorMessage = "'name' should  be  than 1 character and 255 character";
 
-        final Genre actualGenre = Genre.newGenre(expectedName,expectedIsActive);
 
-        final DomainException actualException = Assertions.assertThrows(
-                DomainException.class,()->
-                        actualGenre.validate(new ThrowsValidationHandler())
-        );
+        final NotificationException actualException = Assertions.assertThrows(NotificationException.class, ()->{
+            Genre.newGenre(expectedName,expectedIsActive);
+        });
 
         Assertions.assertEquals(expectedErrorCount,actualException.getErrors().size());
         Assertions.assertEquals(expectedErrorMessage,actualException.getErrors().get(0).message());
