@@ -14,6 +14,7 @@ public class CategoryRepositoryTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    //Lembrar de comentar no build gradler o validation
     @Test
     public void givenAInvalidNameNull_whenCallsSave_shouldReturnError(){
         final String expectedProperty = "name";
@@ -30,6 +31,7 @@ public class CategoryRepositoryTest {
         Assertions.assertEquals(expectedCauseErrorMessage, actualCause.getMessage());
     }
 
+    //Lembrar de comentar no build gradler o validation
     @Test
     public void givenAInvalidCreateAtNull_whenCallsSave_shouldReturnError(){
         final String expectedProperty = "createdAt";
@@ -46,6 +48,7 @@ public class CategoryRepositoryTest {
         Assertions.assertEquals(expectedCauseErrorMessage, actualCause.getMessage());
     }
 
+    //Lembrar de comentar no build gradler o validation
     @Test
     public void givenAInvalidUpdatedAtNull_whenCallsSave_shouldReturnError(){
         final String expectedProperty = "updatedAt";

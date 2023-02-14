@@ -4,6 +4,7 @@ import com.fullcycle.vicente.domain.AggregateRoot;
 import com.fullcycle.vicente.domain.category.Category;
 import com.fullcycle.vicente.domain.category.CategoryID;
 import com.fullcycle.vicente.domain.exceptions.NotificationException;
+import com.fullcycle.vicente.domain.utils.InstantUtils;
 import com.fullcycle.vicente.domain.validation.ValidationHandler;
 import com.fullcycle.vicente.domain.validation.handler.Notification;
 
@@ -38,7 +39,7 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
 
     public static Genre newGenre(final String aName, final boolean isActive){
         final GenreID id = GenreID.unique();
-        final Instant now = Instant.now();
+        final Instant now = InstantUtils.now();
         final Instant deletedAt = isActive ? null : now;
         return new Genre(id,aName, isActive, now, now , deletedAt, new ArrayList<>());
     }
@@ -120,17 +121,17 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
 
     public Genre deactivate(){
         if(getDeletedAt() == null){
-            this.deletedAt = Instant.now();
+            this.deletedAt = InstantUtils.now();
         }
         this.active = false;
-        this.updatedAt = Instant.now();
+        this.updatedAt = InstantUtils.now();
         return this;
     }
 
     public Genre activate(){
         this.active = true;
         this.deletedAt = null;
-        this.updatedAt = Instant.now();
+        this.updatedAt = InstantUtils.now();
         return this;
     }
 
@@ -142,7 +143,7 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
         else {
             deactivate();
         }
-        this.updatedAt = Instant.now();
+        this.updatedAt = InstantUtils.now();
         return  this;
     }
 

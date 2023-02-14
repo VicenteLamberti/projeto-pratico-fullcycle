@@ -7,6 +7,8 @@ import com.fullcycle.vicente.domain.validation.handler.ThrowsValidationHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
+
 public class GenreTest {
 
     @Test
@@ -91,7 +93,60 @@ public class GenreTest {
 
         Assertions.assertEquals(expectedErrorCount,actualException.getErrors().size());
         Assertions.assertEquals(expectedErrorMessage,actualException.getErrors().get(0).message());
+    }
+
+    @Test
+    public void givenAActiveGenre_whenCallDeactivate_shouldReceiveOk() throws InterruptedException {
+
+        final String expectedName="Ação";
+        final boolean expectedIsActive = false;
+        final int expectedCategories = 0;
 
 
+        final Genre actualGenre = Genre.newGenre(expectedName,true);
+        Instant actualCreatedAt = actualGenre.getCreatedAt();
+        Instant actualUpdatedAt = actualGenre.getUpdatedAt();
+
+        Thread.sleep(2);// para o teste funcionar
+
+        Assertions.assertNotNull(actualGenre);
+        actualGenre.deactivate();
+
+
+        Assertions.assertNotNull(actualGenre.getId());
+        Assertions.assertNotNull(actualGenre.getName());
+        Assertions.assertNotNull(actualGenre.isActive());
+        Assertions.assertEquals(expectedCategories,actualGenre.getCategories().size());
+        Assertions.assertEquals(actualCreatedAt,actualGenre.getCreatedAt());
+        Assertions.assertTrue(actualUpdatedAt.isBefore(actualGenre.getUpdatedAt()));
+        Assertions.assertNotNull(actualGenre.getDeletedAt());
+    }
+
+
+    @Test
+    public void givenAInactiveGenre_whenCallActivate_shouldReceiveOk() throws InterruptedException {
+
+        final String expectedName="Ação";
+        final boolean expectedIsActive = true;
+        final int expectedCategories = 0;
+
+
+        final Genre actualGenre = Genre.newGenre(expectedName,false);
+        Instant actualCreatedAt = actualGenre.getCreatedAt();
+        Instant actualUpdatedAt = actualGenre.getUpdatedAt();
+
+        Thread.sleep(2);// para o teste funcionar
+
+        Assertions.assertNotNull(actualGenre);
+        actualGenre.activate();
+
+
+        Assertions.assertNotNull(actualGenre.getId());
+        Assertions.assertNotNull(actualGenre.getName());
+        Assertions.assertNotNull(actualGenre.isActive());
+        Assertions.assertEquals(expectedCategories,actualGenre.getCategories().size());
+        Assertions.assertEquals(actualCreatedAt,actualGenre.getCreatedAt());
+        Assertions.assertTrue(actualUpdatedAt.isBefore(actualGenre.getUpdatedAt()));
+        Assertions.assertNull(actualGenre.getDeletedAt());
     }
 }
