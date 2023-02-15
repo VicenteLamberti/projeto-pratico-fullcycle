@@ -141,7 +141,7 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
 
     public Genre update(final String aName, final boolean isActive, final List<CategoryID> categories){
         this.name = aName;
-        this.categories = new ArrayList<>(categories);
+        this.categories = new ArrayList<>(categories != null ? categories : Collections.emptyList());
         if(isActive){
             activate();
         }
