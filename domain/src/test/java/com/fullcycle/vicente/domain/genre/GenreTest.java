@@ -1,6 +1,8 @@
 package com.fullcycle.vicente.domain.genre;
 
 
+import com.fullcycle.vicente.domain.category.Category;
+import com.fullcycle.vicente.domain.category.CategoryID;
 import com.fullcycle.vicente.domain.exceptions.DomainException;
 import com.fullcycle.vicente.domain.exceptions.NotificationException;
 import com.fullcycle.vicente.domain.validation.handler.ThrowsValidationHandler;
@@ -8,6 +10,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.util.List;
 
 public class GenreTest {
 
@@ -148,5 +151,122 @@ public class GenreTest {
         Assertions.assertEquals(actualCreatedAt,actualGenre.getCreatedAt());
         Assertions.assertTrue(actualUpdatedAt.isBefore(actualGenre.getUpdatedAt()));
         Assertions.assertNull(actualGenre.getDeletedAt());
+    }
+
+    @Test
+    public void givenAValidInactivateGenre_whenCallUpdate_shouldReceiveOGenreUpdated() throws InterruptedException {
+
+        final String expectedName="Ação";
+        final boolean expectedIsActive = true;
+        final List<CategoryID> expectedCategories = List.of(CategoryID.from("123"));
+
+
+        final Genre actualGenre = Genre.newGenre("acao",false);
+
+        Instant actualCreatedAt = actualGenre.getCreatedAt();
+        Instant actualUpdatedAt = actualGenre.getUpdatedAt();
+
+        Thread.sleep(2);// para o teste funcionar
+
+        Assertions.assertNotNull(actualGenre);
+        actualGenre.update(expectedName,expectedIsActive,expectedCategories);
+
+
+        Assertions.assertNotNull(actualGenre.getId());
+        Assertions.assertNotNull(actualGenre.getName());
+        Assertions.assertNotNull(actualGenre.isActive());
+        Assertions.assertEquals(expectedCategories,actualGenre.getCategories());
+        Assertions.assertEquals(actualCreatedAt,actualGenre.getCreatedAt());
+        Assertions.assertTrue(actualUpdatedAt.isBefore(actualGenre.getUpdatedAt()));
+        Assertions.assertNull(actualGenre.getDeletedAt());
+    }
+
+
+
+    @Test
+    public void givenAValidActivateGenre_whenCallUpdate_shouldReceiveOGenreUpdated() throws InterruptedException {
+
+        final String expectedName="Ação";
+        final boolean expectedIsActive = false;
+        final List<CategoryID> expectedCategories = List.of(CategoryID.from("123"));
+
+
+        final Genre actualGenre = Genre.newGenre("acao",true);
+
+        Instant actualCreatedAt = actualGenre.getCreatedAt();
+        Instant actualUpdatedAt = actualGenre.getUpdatedAt();
+
+        Thread.sleep(2);// para o teste funcionar
+
+        Assertions.assertNotNull(actualGenre);
+        actualGenre.update(expectedName,expectedIsActive,expectedCategories);
+
+
+        Assertions.assertNotNull(actualGenre.getId());
+        Assertions.assertNotNull(actualGenre.getName());
+        Assertions.assertNotNull(actualGenre.isActive());
+        Assertions.assertEquals(expectedCategories,actualGenre.getCategories());
+        Assertions.assertEquals(actualCreatedAt,actualGenre.getCreatedAt());
+        Assertions.assertTrue(actualUpdatedAt.isBefore(actualGenre.getUpdatedAt()));
+        Assertions.assertNotNull(actualGenre.getDeletedAt());
+    }
+
+    @Test
+    public void givenAValidGenre_whenCallUpdateWithInvalidProperty_shouldReceiveNotificationException() throws InterruptedException {
+
+        final String expectedName=" ";
+        final boolean expectedIsActive = true;
+        final List<CategoryID> expectedCategories = List.of(CategoryID.from("123"));
+
+
+        final Genre actualGenre = Genre.newGenre("acao",false);
+
+        Thread.sleep(2);// para o teste funcionar
+
+
+
+        final int expectedErrorCount = 1;
+        final String expectedErrorMessage = "'name' should not be empty";
+
+
+        final NotificationException actualException = Assertions.assertThrows(NotificationException.class, ()->{
+            actualGenre.update(expectedName,expectedIsActive,expectedCategories);
+        });
+
+        Assertions.assertEquals(expectedErrorCount,actualException.getErrors().size());
+        Assertions.assertEquals(expectedErrorMessage,actualException.getErrors().get(0).message());
+
+
+
+    }
+
+
+    @Test
+    public void givenAValidGenre_whenCallUpdateWithInvalidPropertyNameNull_shouldReceiveNotificationException() throws InterruptedException {
+
+        final String expectedName=null;
+        final boolean expectedIsActive = true;
+        final List<CategoryID> expectedCategories = List.of(CategoryID.from("123"));
+
+
+        final Genre actualGenre = Genre.newGenre("acao",false);
+
+        Thread.sleep(2);// para o teste funcionar
+
+
+
+        final int expectedErrorCount = 1;
+        final String expectedErrorMessage = "'name' should not be null";
+
+
+        final NotificationException actualException = Assertions.assertThrows(NotificationException.class, ()->{
+            actualGenre.update(expectedName,expectedIsActive,expectedCategories);
+        });
+
+        Assertions.assertEquals(expectedErrorCount,actualException.getErrors().size());
+        Assertions.assertEquals(expectedErrorMessage,actualException.getErrors().get(0).message());
+
+
+
     }
 }

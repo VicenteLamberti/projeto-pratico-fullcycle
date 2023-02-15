@@ -30,6 +30,10 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
         this.deletedAt = deletedAt;
         this.categories = categories;
 
+        selfValidate();
+    }
+
+    private void selfValidate() {
         Notification notification = Notification.create();
         validate(notification);
         if(notification.hasError()){
@@ -135,8 +139,9 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
         return this;
     }
 
-    public Genre update(final String aName, final boolean isActive){
+    public Genre update(final String aName, final boolean isActive, final List<CategoryID> categories){
         this.name = aName;
+        this.categories = new ArrayList<>(categories);
         if(isActive){
             activate();
         }
@@ -144,6 +149,7 @@ public class Genre extends AggregateRoot<GenreID> implements Cloneable {
             deactivate();
         }
         this.updatedAt = InstantUtils.now();
+        selfValidate();
         return  this;
     }
 
