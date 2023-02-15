@@ -1,5 +1,6 @@
 package com.fullcycle.vicente.domain.category;
 
+import com.fullcycle.vicente.domain.pagination.SearchQuery;
 import com.fullcycle.vicente.domain.pagination.Pagination;
 
 import java.util.Optional;
@@ -13,5 +14,5 @@ public interface CategoryGateway {
 
     Category update(Category aCategory);
 
-    Pagination<Category> findAll(CategorySearchQuery aQuery);
+    Pagination<Category> findAll(SearchQuery aQuery);
 }

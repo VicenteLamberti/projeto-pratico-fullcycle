@@ -9,7 +9,7 @@ import com.fullcycle.vicente.application.category.retrieve.list.ListCategoriesUs
 import com.fullcycle.vicente.application.category.update.UpdateCategoryCommand;
 import com.fullcycle.vicente.application.category.update.UpdateCategoryOutput;
 import com.fullcycle.vicente.application.category.update.UpdateCategoryUseCase;
-import com.fullcycle.vicente.domain.category.CategorySearchQuery;
+import com.fullcycle.vicente.domain.pagination.SearchQuery;
 import com.fullcycle.vicente.domain.pagination.Pagination;
 import com.fullcycle.vicente.domain.validation.handler.Notification;
 import com.fullcycle.vicente.infrastructure.api.CategoryAPI;
@@ -70,7 +70,7 @@ public class CategoryController implements CategoryAPI {
 
     @Override
     public Pagination<CategoryListResponse> listCategories(final String search, final int page, final int perPage, final String sort, final String direction) {
-        return listCategoriesUseCase.execute(new CategorySearchQuery(page,perPage,search,sort,direction))
+        return listCategoriesUseCase.execute(new SearchQuery(page,perPage,search,sort,direction))
                 .map(CategoryApiPresenter::present);
     }
 

@@ -2,7 +2,7 @@ package com.fullcycle.vicente.infrastructure.category;
 
 import com.fullcycle.vicente.domain.category.Category;
 import com.fullcycle.vicente.domain.category.CategoryID;
-import com.fullcycle.vicente.domain.category.CategorySearchQuery;
+import com.fullcycle.vicente.domain.pagination.SearchQuery;
 import com.fullcycle.vicente.domain.pagination.Pagination;
 import com.fullcycle.vicente.MySQLGatewayTest;
 import com.fullcycle.vicente.infrastructure.category.persistence.CategoryJPAEntity;
@@ -190,7 +190,7 @@ public class CategoryMySQLGatewayTest {
         ));
 
         Assertions.assertEquals(3,categoryRepository.count());
-        final CategorySearchQuery query = new CategorySearchQuery(0,1,"","name","asc");
+        final SearchQuery query = new SearchQuery(0,1,"","name","asc");
         final Pagination<Category> actualResult = categoryMySQLGateway.findAll(query);
 
         Assertions.assertEquals(expectedPage,actualResult.currentPage());
@@ -210,7 +210,7 @@ public class CategoryMySQLGatewayTest {
 
 
         Assertions.assertEquals(0,categoryRepository.count());
-        final CategorySearchQuery query = new CategorySearchQuery(0,1,"","name","asc");
+        final SearchQuery query = new SearchQuery(0,1,"","name","asc");
         final Pagination<Category> actualResult = categoryMySQLGateway.findAll(query);
 
         Assertions.assertEquals(expectedPage,actualResult.currentPage());
@@ -238,7 +238,7 @@ public class CategoryMySQLGatewayTest {
 
         Assertions.assertEquals(3,categoryRepository.count());
 
-        CategorySearchQuery query = new CategorySearchQuery(0,1,"","name","asc");
+        SearchQuery query = new SearchQuery(0,1,"","name","asc");
         Pagination<Category> actualResult = categoryMySQLGateway.findAll(query);
 
         Assertions.assertEquals(expectedPage,actualResult.currentPage());
@@ -250,7 +250,7 @@ public class CategoryMySQLGatewayTest {
         //Page 1
 
         expectedPage = 1;
-        query = new CategorySearchQuery(1,1,"","name","asc");
+        query = new SearchQuery(1,1,"","name","asc");
         actualResult = categoryMySQLGateway.findAll(query);
 
 
@@ -267,7 +267,7 @@ public class CategoryMySQLGatewayTest {
         //Page 2
 
         expectedPage = 2;
-        query = new CategorySearchQuery(2,1,"","name","asc");
+        query = new SearchQuery(2,1,"","name","asc");
         actualResult = categoryMySQLGateway.findAll(query);
 
         Assertions.assertEquals(expectedPage,actualResult.currentPage());
@@ -297,7 +297,7 @@ public class CategoryMySQLGatewayTest {
         ));
 
         Assertions.assertEquals(3,categoryRepository.count());
-        final CategorySearchQuery query = new CategorySearchQuery(0,1,"doc","name","asc");
+        final SearchQuery query = new SearchQuery(0,1,"doc","name","asc");
         final Pagination<Category> actualResult = categoryMySQLGateway.findAll(query);
 
         Assertions.assertEquals(expectedPage,actualResult.currentPage());
@@ -326,7 +326,7 @@ public class CategoryMySQLGatewayTest {
         ));
 
         Assertions.assertEquals(3,categoryRepository.count());
-        final CategorySearchQuery query = new CategorySearchQuery(0,1,"MAIS assistida","name","asc");
+        final SearchQuery query = new SearchQuery(0,1,"MAIS assistida","name","asc");
         final Pagination<Category> actualResult = categoryMySQLGateway.findAll(query);
 
         Assertions.assertEquals(expectedPage,actualResult.currentPage());

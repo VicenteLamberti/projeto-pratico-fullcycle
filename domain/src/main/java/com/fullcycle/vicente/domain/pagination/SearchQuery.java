@@ -1,6 +1,6 @@
-package com.fullcycle.vicente.domain.category;
+package com.fullcycle.vicente.domain.pagination;
 
-public record CategorySearchQuery(
+public record SearchQuery(
         int page,
         int perPage,
         String terms,

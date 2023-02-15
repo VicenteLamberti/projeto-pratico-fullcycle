@@ -1,10 +1,9 @@
 package com.fullcycle.vicente.application.category.retrieve.list;
 
 import com.fullcycle.vicente.IntegrationTest;
-import com.fullcycle.vicente.application.category.retrieve.get.GetCategoryByIdUseCase;
 import com.fullcycle.vicente.domain.category.Category;
 import com.fullcycle.vicente.domain.category.CategoryGateway;
-import com.fullcycle.vicente.domain.category.CategorySearchQuery;
+import com.fullcycle.vicente.domain.pagination.SearchQuery;
 import com.fullcycle.vicente.domain.pagination.Pagination;
 import com.fullcycle.vicente.infrastructure.category.persistence.CategoryJPAEntity;
 import com.fullcycle.vicente.infrastructure.category.persistence.CategoryRepository;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
@@ -63,7 +61,7 @@ public class ListCategoriesUseCaseIT {
         final int expectedTotal = 0;
 
         
-        final CategorySearchQuery aQuery = new CategorySearchQuery(expectedPage,expectedPerPage,expectedTerms,expectedSort,expectedDirection);
+        final SearchQuery aQuery = new SearchQuery(expectedPage,expectedPerPage,expectedTerms,expectedSort,expectedDirection);
 
         Pagination<CategoryListOutput> actualResult = useCase.execute(aQuery);
 
@@ -97,7 +95,7 @@ public class ListCategoriesUseCaseIT {
 
 
 
-        final CategorySearchQuery aQuery = new CategorySearchQuery(expectedPage,expectedPerPage,expectedTerms,expectedSort,expectedDirection);
+        final SearchQuery aQuery = new SearchQuery(expectedPage,expectedPerPage,expectedTerms,expectedSort,expectedDirection);
 
         Pagination<CategoryListOutput> actualResult = useCase.execute(aQuery);
 
@@ -126,7 +124,7 @@ public class ListCategoriesUseCaseIT {
             final String expectedCategoryName
     ){
 
-        final CategorySearchQuery aQuery = new CategorySearchQuery(expectedPage,expectedPerPage,"",expectedSort,expectedDirection);
+        final SearchQuery aQuery = new SearchQuery(expectedPage,expectedPerPage,"",expectedSort,expectedDirection);
 
         Pagination<CategoryListOutput> actualResult = useCase.execute(aQuery);
 
@@ -157,7 +155,7 @@ public class ListCategoriesUseCaseIT {
         final var expectedTerms = "";
 
         final var aQuery =
-                new CategorySearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
+                new SearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
 
         final var actualResult = useCase.execute(aQuery);
 

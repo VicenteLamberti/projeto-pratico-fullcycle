@@ -2,7 +2,7 @@ package com.fullcycle.vicente.application.category.retrieve.list;
 
 import com.fullcycle.vicente.domain.category.Category;
 import com.fullcycle.vicente.domain.category.CategoryGateway;
-import com.fullcycle.vicente.domain.category.CategorySearchQuery;
+import com.fullcycle.vicente.domain.pagination.SearchQuery;
 import com.fullcycle.vicente.domain.pagination.Pagination;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,7 +44,7 @@ public class ListCategoriesUseCaseTest {
 
 
 
-        final CategorySearchQuery aQuery = new CategorySearchQuery(expectedPage,expectedPerPage,expectedTerms,expectedSort,expectedDirection);
+        final SearchQuery aQuery = new SearchQuery(expectedPage,expectedPerPage,expectedTerms,expectedSort,expectedDirection);
 
 
         final Pagination<Category> expectedPagination = new Pagination<Category>(expectedPage,expectedPerPage,categories.size(),categories);
@@ -80,7 +80,7 @@ public class ListCategoriesUseCaseTest {
         final int expectedItemsCount=0;
 
 
-        final CategorySearchQuery aQuery = new CategorySearchQuery(expectedPage,expectedPerPage,expectedTerms,expectedSort,expectedDirection);
+        final SearchQuery aQuery = new SearchQuery(expectedPage,expectedPerPage,expectedTerms,expectedSort,expectedDirection);
 
 
         final Pagination<Category> expectedPagination = new Pagination<Category>(expectedPage,expectedPerPage,categories.size(),categories);
@@ -114,7 +114,7 @@ public class ListCategoriesUseCaseTest {
         final String expectedErrorMessage = "Gateway error";
 
 
-        final CategorySearchQuery aQuery = new CategorySearchQuery(expectedPage,expectedPerPage,expectedTerms,expectedSort,expectedDirection);
+        final SearchQuery aQuery = new SearchQuery(expectedPage,expectedPerPage,expectedTerms,expectedSort,expectedDirection);
 
 
         Mockito.when(categoryGateway.findAll(Mockito.eq(aQuery)))

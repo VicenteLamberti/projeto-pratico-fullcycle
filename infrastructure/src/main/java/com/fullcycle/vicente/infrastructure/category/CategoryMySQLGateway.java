@@ -3,7 +3,7 @@ package com.fullcycle.vicente.infrastructure.category;
 import com.fullcycle.vicente.domain.category.Category;
 import com.fullcycle.vicente.domain.category.CategoryGateway;
 import com.fullcycle.vicente.domain.category.CategoryID;
-import com.fullcycle.vicente.domain.category.CategorySearchQuery;
+import com.fullcycle.vicente.domain.pagination.SearchQuery;
 import com.fullcycle.vicente.domain.pagination.Pagination;
 import com.fullcycle.vicente.infrastructure.category.persistence.CategoryJPAEntity;
 import com.fullcycle.vicente.infrastructure.category.persistence.CategoryRepository;
@@ -50,7 +50,7 @@ public class CategoryMySQLGateway implements CategoryGateway {
     }
 
     @Override
-    public Pagination<Category> findAll(CategorySearchQuery aQuery) {
+    public Pagination<Category> findAll(SearchQuery aQuery) {
 
         final PageRequest page = PageRequest.of(
                 aQuery.page(),

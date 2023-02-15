@@ -1,7 +1,7 @@
 package com.fullcycle.vicente.application.category.retrieve.list;
 
 import com.fullcycle.vicente.domain.category.CategoryGateway;
-import com.fullcycle.vicente.domain.category.CategorySearchQuery;
+import com.fullcycle.vicente.domain.pagination.SearchQuery;
 import com.fullcycle.vicente.domain.pagination.Pagination;
 
 import java.util.Objects;
@@ -14,7 +14,7 @@ public class DefaultListCategoriesUseCase extends ListCategoriesUseCase{
         this.categoryGateway = Objects.requireNonNull(categoryGateway);
     }
     @Override
-    public Pagination<CategoryListOutput> execute(final CategorySearchQuery aQuery) {
+    public Pagination<CategoryListOutput> execute(final SearchQuery aQuery) {
         return this.categoryGateway.findAll(aQuery)
                 .map(CategoryListOutput::from);
     }
