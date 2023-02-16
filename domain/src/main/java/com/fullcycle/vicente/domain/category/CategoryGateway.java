@@ -3,6 +3,7 @@ package com.fullcycle.vicente.domain.category;
 import com.fullcycle.vicente.domain.pagination.SearchQuery;
 import com.fullcycle.vicente.domain.pagination.Pagination;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CategoryGateway {
@@ -15,4 +16,6 @@ public interface CategoryGateway {
     Category update(Category aCategory);
 
     Pagination<Category> findAll(SearchQuery aQuery);
+
+    List<CategoryID> existsByIds(Iterable<CategoryID> ids);
 }
