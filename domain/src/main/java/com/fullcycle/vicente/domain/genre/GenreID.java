@@ -27,7 +27,7 @@ public class GenreID extends Identifier {
 
     @Override
     public String getValue() {
-        return null;
+        return value;
     }
 
     @Override
