@@ -305,6 +305,104 @@ public class GenreTest {
 
     }
 
+
+    @Test
+    public void givenAValidGenreWithoutCategories_whenCallAddCategories_shouldReceiveOK() throws InterruptedException {
+
+        final String expectedName="Ação";
+        final boolean expectedIsActive = true;
+
+        final CategoryID seriesID = CategoryID.from("123");
+        final CategoryID moviesID = CategoryID.from("456");
+        final List<CategoryID> expectedCategories = List.of(seriesID,moviesID);
+
+
+
+        final Genre actualGenre = Genre.newGenre("acao",false);
+
+        Instant actualCreatedAt =actualGenre.getCreatedAt();
+        Instant actualUpdatedAt = actualGenre.getUpdatedAt();
+        Assertions.assertEquals(0,actualGenre.getCategories().size());
+
+        Thread.sleep(2);// para o teste funcionar
+
+        actualGenre.addCategories(expectedCategories);
+
+
+        Assertions.assertNotNull(actualGenre.getId());
+        Assertions.assertNotNull(actualGenre.getName());
+        Assertions.assertNotNull(actualGenre.isActive());
+        Assertions.assertEquals(expectedCategories,actualGenre.getCategories());
+        Assertions.assertEquals(actualCreatedAt,actualGenre.getCreatedAt());
+        Assertions.assertTrue(actualUpdatedAt.isBefore(actualGenre.getUpdatedAt()));
+        Assertions.assertNotNull(actualGenre.getDeletedAt());
+
+    }
+
+
+    @Test
+    public void givenAValidGenreWithoutCategories_whenCallAddCategoriesWithEmptyList_shouldReceiveOK() throws InterruptedException {
+
+        final String expectedName="Ação";
+        final boolean expectedIsActive = true;
+
+        final List<CategoryID> expectedCategories = List.<CategoryID>of();
+
+
+
+        final Genre actualGenre = Genre.newGenre("acao",false);
+
+        Instant actualCreatedAt =actualGenre.getCreatedAt();
+        Instant actualUpdatedAt = actualGenre.getUpdatedAt();
+        Assertions.assertEquals(0,actualGenre.getCategories().size());
+
+        Thread.sleep(2);// para o teste funcionar
+
+        actualGenre.addCategories(expectedCategories);
+
+
+        Assertions.assertNotNull(actualGenre.getId());
+        Assertions.assertNotNull(actualGenre.getName());
+        Assertions.assertNotNull(actualGenre.isActive());
+        Assertions.assertEquals(expectedCategories,actualGenre.getCategories());
+        Assertions.assertEquals(actualCreatedAt,actualGenre.getCreatedAt());
+        Assertions.assertEquals(actualUpdatedAt,actualGenre.getUpdatedAt());
+        Assertions.assertNotNull(actualGenre.getDeletedAt());
+
+    }
+
+
+    @Test
+    public void givenAValidGenreWithoutCategories_whenCallAddCategoriesWithNullList_shouldReceiveOK() throws InterruptedException {
+
+        final String expectedName="Ação";
+        final boolean expectedIsActive = true;
+
+        final List<CategoryID> expectedCategories = List.<CategoryID>of();
+
+
+
+        final Genre actualGenre = Genre.newGenre("acao",false);
+
+        Instant actualCreatedAt =actualGenre.getCreatedAt();
+        Instant actualUpdatedAt = actualGenre.getUpdatedAt();
+        Assertions.assertEquals(0,actualGenre.getCategories().size());
+
+        Thread.sleep(2);// para o teste funcionar
+
+        actualGenre.addCategories(null);
+
+
+        Assertions.assertNotNull(actualGenre.getId());
+        Assertions.assertNotNull(actualGenre.getName());
+        Assertions.assertNotNull(actualGenre.isActive());
+        Assertions.assertEquals(expectedCategories,actualGenre.getCategories());
+        Assertions.assertEquals(actualCreatedAt,actualGenre.getCreatedAt());
+        Assertions.assertEquals(actualUpdatedAt,actualGenre.getUpdatedAt());
+        Assertions.assertNotNull(actualGenre.getDeletedAt());
+
+    }
+
     @Test
     public void givenAValidGenreWithTwoCategories_whenCallRemoveCategory_shouldReceiveOK() throws InterruptedException {
 
