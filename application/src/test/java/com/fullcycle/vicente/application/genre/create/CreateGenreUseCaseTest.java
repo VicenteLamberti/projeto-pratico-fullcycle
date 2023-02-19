@@ -1,4 +1,4 @@
-package genre.create;
+package com.fullcycle.vicente.application.genre.create;
 
 import com.fullcycle.vicente.application.genre.create.CreateGenreCommand;
 import com.fullcycle.vicente.application.genre.create.CreateGenreOutput;

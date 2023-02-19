@@ -1,4 +1,4 @@
-package genre.update;
+package com.fullcycle.vicente.application.genre.update;
 
 import com.fullcycle.vicente.application.category.update.UpdateCategoryCommand;
 import com.fullcycle.vicente.application.genre.create.CreateGenreOutput;
