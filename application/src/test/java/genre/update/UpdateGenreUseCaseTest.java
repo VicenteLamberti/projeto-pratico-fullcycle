@@ -3,6 +3,9 @@ package genre.update;
 import com.fullcycle.vicente.application.category.update.UpdateCategoryCommand;
 import com.fullcycle.vicente.application.genre.create.CreateGenreOutput;
 import com.fullcycle.vicente.application.genre.create.DefaultCreateGenreUseCase;
+import com.fullcycle.vicente.application.genre.update.DefaultUpdateGenreUseCase;
+import com.fullcycle.vicente.application.genre.update.UpdateGenreCommand;
+import com.fullcycle.vicente.application.genre.update.UpdateGenreOutput;
 import com.fullcycle.vicente.domain.category.CategoryGateway;
 import com.fullcycle.vicente.domain.category.CategoryID;
 import com.fullcycle.vicente.domain.genre.Genre;
@@ -48,7 +51,7 @@ public class UpdateGenreUseCaseTest {
           expectedId.getValue(),
           expectedName,
           expectedIsActive,
-          expectedCategories
+          asString(expectedCategories)
 
         );
 
@@ -81,5 +84,12 @@ public class UpdateGenreUseCaseTest {
         ));
 
 
+    }
+
+
+    private List<String> asString(final List<CategoryID> categories ){
+        return categories.stream()
+                .map(CategoryID::getValue)
+                .toList();
     }
 }
