@@ -46,7 +46,7 @@ public class DefaultUpdateGenreUseCase extends UpdateGenreUseCase {
 
         final Notification notification = Notification.create();
         notification.append(validateCategories(categories));
-        aGenre.update(aName,isActive,categories);
+        notification.validate(()->aGenre.update(aName,isActive,categories));
         if(notification.hasError()){
             throw new NotificationException("Could not update Aggregate Genre", notification);
         }

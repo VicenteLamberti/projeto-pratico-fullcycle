@@ -83,6 +83,47 @@ public class UpdateCategoryUseCaseTest {
                 ));
     }
 
+
+    @Test
+    public void givenAValidCommandWithInactive_whenCallsUpdateCategory_shouldReturnCategoryId(){
+        final String expectedName = "Filmes";
+        final String expectedDescription = "A categoria mais assistida";
+        final boolean expectedIsActive = false;
+
+        final Category aCategory = Category.newCategory("Film", null, true);
+
+        CategoryID expectedId = aCategory.getId();
+        final UpdateCategoryCommand aCommand = UpdateCategoryCommand.with(
+                expectedId.getValue(),
+                expectedName,
+                expectedDescription,
+                expectedIsActive);
+
+        Mockito.when(categoryGateway.findById(Mockito.eq(expectedId))).thenReturn(Optional.of((Category.clone(aCategory))));
+
+        Mockito.when(categoryGateway.update(Mockito.any()))
+                .thenAnswer(AdditionalAnswers.returnsFirstArg());
+
+        final UpdateCategoryOutput actualOutput = useCase.execute(aCommand).get();
+
+        Assertions.assertNotNull(actualOutput);
+        Assertions.assertNotNull(actualOutput.id());
+
+        Mockito.verify(categoryGateway, Mockito.times(1)).findById(expectedId);
+
+        Mockito.verify(categoryGateway, Mockito.times(1))
+                .update(Mockito.argThat(aUpdatedCategory ->
+                        Objects.equals(expectedName, aUpdatedCategory.getName())
+                                && Objects.equals(expectedDescription, aUpdatedCategory.getDescription())
+                                && Objects.equals(expectedIsActive, aUpdatedCategory.isActive())
+                                && Objects.equals(expectedId, aUpdatedCategory.getId())
+                                && Objects.equals(aCategory.getCreatedAt(), aUpdatedCategory.getCreatedAt())
+                                && aCategory.getUpdatedAt().isBefore(aUpdatedCategory.getUpdatedAt())
+                                && Objects.nonNull(aUpdatedCategory.getDeletedAt())
+
+                ));
+    }
+
     @Test
     public void givenAInvalidName_whenCallUpdateCategory_thenShouldReturnDomainException(){
         final String expectedName = null;
