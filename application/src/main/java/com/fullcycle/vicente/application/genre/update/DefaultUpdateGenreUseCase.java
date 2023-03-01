@@ -43,13 +43,15 @@ public class DefaultUpdateGenreUseCase extends UpdateGenreUseCase {
 
         final Genre aGenre = this.genreGateway.findById(anId).orElseThrow(notFound(anId));
 
+
         final Notification notification = Notification.create();
         notification.append(validateCategories(categories));
-
-        notification.validate(()->aGenre.update(aName,isActive,categories));
+        aGenre.update(aName,isActive,categories);
         if(notification.hasError()){
-            throw new NotificationException("Could not update Aggregate Genre %s".formatted(aCommand.id()),notification);
+            throw new NotificationException("Could not update Aggregate Genre", notification);
         }
+
+
         return UpdateGenreOutput.from(this.genreGateway.update(aGenre));
     }
 
