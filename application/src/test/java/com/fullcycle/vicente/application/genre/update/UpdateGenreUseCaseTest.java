@@ -1,5 +1,6 @@
 package com.fullcycle.vicente.application.genre.update;
 
+import com.fullcycle.vicente.application.UseCaseTest;
 import com.fullcycle.vicente.application.category.update.UpdateCategoryCommand;
 import com.fullcycle.vicente.application.genre.create.CreateGenreOutput;
 import com.fullcycle.vicente.application.genre.create.DefaultCreateGenreUseCase;
@@ -27,8 +28,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@ExtendWith(MockitoExtension.class)
-public class UpdateGenreUseCaseTest {
+public class UpdateGenreUseCaseTest extends UseCaseTest {
+    @Override
+    protected List<Object> getMocks() {
+        return List.of(genreGateway,categoryGateway);
+    }
 
     @InjectMocks
     private DefaultUpdateGenreUseCase useCase;

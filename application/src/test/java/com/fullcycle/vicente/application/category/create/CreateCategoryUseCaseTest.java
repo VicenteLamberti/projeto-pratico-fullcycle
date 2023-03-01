@@ -1,5 +1,6 @@
 package com.fullcycle.vicente.application.category.create;
 
+import com.fullcycle.vicente.application.UseCaseTest;
 import com.fullcycle.vicente.application.category.create.CreateCategoryCommand;
 import com.fullcycle.vicente.application.category.create.CreateCategoryOutput;
 import com.fullcycle.vicente.application.category.create.DefaultCreateCategoryUseCase;
@@ -17,12 +18,16 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Objects;
 
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 
-@ExtendWith(MockitoExtension.class)
-public class CreateCategoryUseCaseTest {
+public class CreateCategoryUseCaseTest extends UseCaseTest {
+    @Override
+    protected List<Object> getMocks() {
+        return List.of(categoryGateway);
+    }
 
     @InjectMocks
     private DefaultCreateCategoryUseCase useCase;
@@ -35,10 +40,6 @@ public class CreateCategoryUseCaseTest {
     //Teste Criando uma categoria inativa
     //Teste simulando um erro genérico vindo do gateway
 
-    @BeforeEach
-    void cleanUp(){
-        Mockito.reset(categoryGateway);
-    }
 
     @Test
     public void givenAValidCommand_whenCallsCreateCategory_shouldReturnCategoryId(){
@@ -152,5 +153,6 @@ public class CreateCategoryUseCaseTest {
 
                 ));
     }
+
 
 }

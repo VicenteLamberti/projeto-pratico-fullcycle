@@ -1,5 +1,6 @@
 package com.fullcycle.vicente.application.category.retrieve.list;
 
+import com.fullcycle.vicente.application.UseCaseTest;
 import com.fullcycle.vicente.domain.category.Category;
 import com.fullcycle.vicente.domain.category.CategoryGateway;
 import com.fullcycle.vicente.domain.pagination.SearchQuery;
@@ -15,8 +16,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-@ExtendWith(MockitoExtension.class)
-public class ListCategoriesUseCaseTest {
+public class ListCategoriesUseCaseTest extends UseCaseTest {
+    @Override
+    protected List<Object> getMocks() {
+        return List.of(categoryGateway);
+    }
 
     @InjectMocks
     DefaultListCategoriesUseCase useCase;
@@ -24,10 +28,7 @@ public class ListCategoriesUseCaseTest {
     @Mock
     CategoryGateway categoryGateway;
 
-    @BeforeEach
-    void cleanUp(){
-        Mockito.reset(categoryGateway);
-    }
+
 
     @Test
     public void givenAValidQuery_whenCallListCategories_thenShouldReturnCategories(){

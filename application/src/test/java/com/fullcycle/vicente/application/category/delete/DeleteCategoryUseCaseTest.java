@@ -1,5 +1,6 @@
 package com.fullcycle.vicente.application.category.delete;
 
+import com.fullcycle.vicente.application.UseCaseTest;
 import com.fullcycle.vicente.domain.category.Category;
 import com.fullcycle.vicente.domain.category.CategoryGateway;
 import com.fullcycle.vicente.domain.category.CategoryID;
@@ -12,18 +13,20 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
-public class DeleteCategoryUseCaseTest {
+import java.util.List;
+
+public class DeleteCategoryUseCaseTest extends UseCaseTest {
+    @Override
+    protected List<Object> getMocks() {
+        return List.of(categoryGateway);
+    }
     @InjectMocks
     DefaultDeleteCategoryUseCase useCase;
 
     @Mock
     CategoryGateway categoryGateway;
 
-    @BeforeEach
-    void cleanUp(){
-        Mockito.reset(categoryGateway);
-    }
+
 
     @Test
     public void givenAValidId_whenCallsDeleteCategory_shouldBeOk(){

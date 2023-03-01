@@ -1,5 +1,6 @@
 package com.fullcycle.vicente.application.category.retrieve.get;
 
+import com.fullcycle.vicente.application.UseCaseTest;
 import com.fullcycle.vicente.domain.category.Category;
 import com.fullcycle.vicente.domain.category.CategoryGateway;
 import com.fullcycle.vicente.domain.category.CategoryID;
@@ -14,10 +15,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
-@ExtendWith(MockitoExtension.class)
-public class GetCategoryByIdUseCaseTest {
+public class GetCategoryByIdUseCaseTest extends UseCaseTest {
+    @Override
+    protected List<Object> getMocks() {
+        return List.of(categoryGateway);
+    }
 
     @InjectMocks
     DefaultGetCategoryByIdUseCase useCase;
@@ -25,10 +30,7 @@ public class GetCategoryByIdUseCaseTest {
     @Mock
     CategoryGateway categoryGateway;
 
-    @BeforeEach
-    void cleanUp(){
-        Mockito.reset(categoryGateway);
-    }
+
 
     @Test
     public void givenAValidId_whenCallsGetCategory_shouldReturnCategory(){

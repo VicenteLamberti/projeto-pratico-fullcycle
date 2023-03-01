@@ -1,30 +1,30 @@
 package com.fullcycle.vicente.application.category.update;
 
-import com.fullcycle.vicente.application.category.create.CreateCategoryCommand;
-import com.fullcycle.vicente.application.category.create.CreateCategoryOutput;
-import com.fullcycle.vicente.application.category.create.DefaultCreateCategoryUseCase;
+import com.fullcycle.vicente.application.UseCaseTest;
 import com.fullcycle.vicente.domain.category.Category;
 import com.fullcycle.vicente.domain.category.CategoryGateway;
 import com.fullcycle.vicente.domain.category.CategoryID;
-import com.fullcycle.vicente.domain.exceptions.DomainException;
 import com.fullcycle.vicente.domain.exceptions.NotFoundException;
 import com.fullcycle.vicente.domain.validation.handler.Notification;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.AdditionalAnswers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Not;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.AdditionalAnswers;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@ExtendWith(MockitoExtension.class)
-public class UpdateCategoryUseCaseTest {
+public class UpdateCategoryUseCaseTest extends UseCaseTest {
+    @Override
+    protected List<Object> getMocks() {
+        return List.of(categoryGateway);
+    }
 
     //Teste do caminho feliz
     //Teste passando uma propriedade inválida
@@ -44,7 +44,7 @@ public class UpdateCategoryUseCaseTest {
     }
 
     @Test
-    public void givenAValidCommand_whenCallsUpdateCategory_shouldReturnCategoryId(){
+    public void givenAValidCommand_whenCallsUpdateCategory_shouldReturnCategoryId() throws InterruptedException {
         final String expectedName = "Filmes";
         final String expectedDescription = "A categoria mais assistida";
         final boolean expectedIsActive = true;
@@ -63,6 +63,7 @@ public class UpdateCategoryUseCaseTest {
         Mockito.when(categoryGateway.update(Mockito.any()))
                 .thenAnswer(AdditionalAnswers.returnsFirstArg());
 
+        Thread.sleep(3);
         final UpdateCategoryOutput actualOutput = useCase.execute(aCommand).get();
 
         Assertions.assertNotNull(actualOutput);
