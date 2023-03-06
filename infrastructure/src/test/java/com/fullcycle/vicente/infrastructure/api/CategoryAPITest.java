@@ -196,7 +196,8 @@ public class CategoryAPITest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.equalTo(aExpectedId)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name", Matchers.equalTo(expectedName)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.description", Matchers.equalTo(expectedDescription)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.is_active", Matchers.equalTo(expectedIsActive)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.is_active", Matchers.equalTo(expectedIsActive)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.created_at", Matchers.equalTo(aCategory.getCreatedAt())));
 
         Mockito.verify(getCategoryByIdUseCase,Mockito.times(1)).execute(aExpectedId);
     }

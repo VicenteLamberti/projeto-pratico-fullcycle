@@ -2,10 +2,6 @@ package com.fullcycle.vicente.application.genre.delete;
 
 
 import com.fullcycle.vicente.application.UseCaseTest;
-import com.fullcycle.vicente.application.category.delete.DefaultDeleteCategoryUseCase;
-import com.fullcycle.vicente.domain.category.Category;
-import com.fullcycle.vicente.domain.category.CategoryGateway;
-import com.fullcycle.vicente.domain.category.CategoryID;
 import com.fullcycle.vicente.domain.genre.Genre;
 import com.fullcycle.vicente.domain.genre.GenreGateway;
 import com.fullcycle.vicente.domain.genre.GenreID;
@@ -17,7 +13,7 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
-public class DeleteApplicationUseCaseTest extends UseCaseTest {
+public class DeleteGenreUseCaseTest extends UseCaseTest {
 
     @Override
     protected List<Object> getMocks() {
